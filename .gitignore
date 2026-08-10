@@ -1,0 +1,13 @@
+# macOS
+.DS_Store
+
+# Editor backups
+*~
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+.cache/
