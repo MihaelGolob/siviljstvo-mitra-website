@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Šiviljstvo Mitra</title>
+		<meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width" />
+        <link href="style.css" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <!-- Fonts -->
+        <link href='https://fonts.googleapis.com/css?family=Great+Vibes' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Sacramento' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
+        
+    </head>
+    <body>
+        <div class="menu">
+            <div class="gradient">
+                <img src="slike/siviljstvo.png">
+                <img src="slike/mitra.png">
+                <img src="slike/logo.png">
+                <img src="slike/betka.png">
+            </div>
+            <a href="index.html" class="zavihekTrenutni zavihekPrvi">Domov</a>
+            <a href="ponudba.html" class="zavihek">Ponudba</a>
+            <a href="kontakt.html" class="zavihek">Kontakt</a>
+        </div>
+        <div class="holder">
+            <div class="drsnice">
+                <div class="slike">
+                    <img src="slike/krozenje/2.png" id="img2" class="slika">
+                    <img src="slike/krozenje/1.png" id="img1" class="slika">
+                </div>
+            </div>       
+            <div class="novo-holder">
+            	<h2>Velikonočni prtički:</h2>
+            	<div class="novo">
+        			<img src="ponudba/naslovneSlike/velikonocni1.png">
+        			<img src="ponudba/naslovneSlike/velikonocni2.png">
+            	</div>
+            	<h2>Talarji:</h2>
+            	<div class="novo">
+        			<img src="ponudba/naslovneSlike/talar1.jpg">
+        			<img src="ponudba/naslovneSlike/talar2.jpg">
+            	</div>
+            	<h2>Pleteni puloverji:</h2>
+            	<div class="novo">
+        			<img src="ponudba/naslovneSlike/pulover.png">
+            	</div>
+            </div>
+        </div>    
+        <footer>
+            <a class="logo" href="https://www.facebook.com/people/%C5%A0iviljstvo-Mitra/100009433814975" target="_blank"><img src="slike/logo/fb.png"></a>
+            <a class="logo" href="https://plus.google.com/u/2/108047242406110429831/about" target="_blank"><img src="slike/logo/g+.png"></a>
+            <a class="logo" href="https://twitter.com/SiviljstvoMitra" target="_blank"><img src="slike/logo/tw.png"></a>
+            <a class="jezik" href="index.html"><img src="slike/slo.png"></a>
+            <a class="jezik" href="index-nem.html"><img src="slike/nem.png"></a>
+            <p>Šiviljstvo Mitra © 2013 - <span id="leto"></span><script>var d = new Date(); document.getElementById("leto").innerHTML = d.getFullYear();</script> &nbsp; Vse pravice pridržane.</p>
+            <p>Izdelava spletne strani: Mihael Golob</p>
+        </footer>
+        <script src="javascript.js"></script>
+        <script src="sneg.js"></script>
+        <script>
+            slide();
+            setInterval(slide, CAS_PRIKAZA_SLIKE * 2 + TRANSITION * 2);
+        </script>
+    </body>
+</html>

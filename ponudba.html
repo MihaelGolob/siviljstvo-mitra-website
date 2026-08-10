@@ -1,0 +1,180 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Šiviljstvo Mitra</title>
+		<meta charset="UTF-8">
+        <link href="style.css" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <!-- Fonts -->
+        <link href='https://fonts.googleapis.com/css?family=Great+Vibes' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Sacramento' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
+    </head>
+    <body>
+        <div class="zatemnitev" id="zatemnitev">
+            <img class="zapri" src="slike/zapri3.png" onclick="zapri()">
+            <div class="galerija">
+                <div class="puscice">
+                    <img onclick="nazaj()" class="arrow" src="slike/levo.png">
+                    <img onclick="naprej()" class="arrow" src="slike/desno.png">
+                    <h3 id="stevilka-slike"></h3>
+                </div>
+                <img id="zamenjajSliko" class="galerija-slike" src="ponudba/slike/albe/1.JPG">          
+            </div>
+        </div>
+            <div class="menu">
+                <div class="gradient">
+                    <img src="slike/siviljstvo.png">
+                    <img src="slike/mitra.png">
+                    <img src="slike/logo.png">
+                    <img src="slike/betka.png">
+                </div>
+                <a href="index.html" class="zavihek zavihekPrvi">Domov</a>
+                <a href="ponudba.html" class="zavihekTrenutni">Ponudba</a>
+                <a href="kontakt.html" class="zavihek">Kontakt</a>
+            </div>
+        <div class="body">
+            <h1>Naši izdelki:</h1>
+            <div class="ponudba-holder">
+                <div class="vsiIzdelki" onclick="pokazi('albe', 19)">
+                    <h2>Albe - roket(koretelj)</h2>
+                    <img src="ponudba/naslovneSlike/alba.JPG">
+                </div>
+
+                <div class="vsiIzdelki" onclick="pokazi('baldahini', 19)">
+                    <h2>Baldahini</h2>
+                    <img src="ponudba/naslovneSlike/baldahin.JPG">
+                </div>
+
+                <div class="vsiIzdelki" onclick="pokazi('bandera', 30)">
+                    <h2>Bandera</h2>
+                    <img src="ponudba/naslovneSlike/bandera.JPG">
+                </div>
+
+                <div class="vsiIzdelki" onclick="pokazi('dalmatika', 8)">
+                    <h2>Dalmatika</h2>
+                    <img src="ponudba/naslovneSlike/dalmatika.JPG">
+                </div>
+
+                <div class="vsiIzdelki" onclick="pokazi('duhovniske', 7)">
+                    <h2>Duhovniške srajce</h2>
+                    <img src="ponudba/naslovneSlike/srajce.png">
+                </div>
+
+                <div class="vsiIzdelki" onclick="pokazi('mitre', 21)">
+                    <h2>Mitre</h2>
+                    <img src="ponudba/naslovneSlike/mitra.JPG">
+                </div>
+
+                <div class="vsiIzdelki" onclick="pokazi('masnibel', 76)">
+                    <h2>Beli mašni plašči</h2>
+                    <img src="ponudba/naslovneSlike/plascbel.JPG">
+                </div>
+                
+                <div class="vsiIzdelki" onclick="pokazi('masnirdec', 40)">
+                    <h2>Rdeči mašni plašči</h2>
+                    <img src="ponudba/naslovneSlike/plascrdec.JPG">
+                </div>
+                
+                <div class="vsiIzdelki" onclick="pokazi('masnivijola', 31)">
+                    <h2>Vijolični mašni plašči</h2>
+                    <img src="ponudba/naslovneSlike/plascvijola.JPG">
+                </div>
+                
+                <div class="vsiIzdelki" onclick="pokazi('masnizelen', 38)">
+                    <h2>Zelen mašni plašči</h2>
+                    <img src="ponudba/naslovneSlike/plasczelen.JPG">
+                </div>
+                
+                <div class="vsiIzdelki" onclick="pokazi('masniunikat', 31)">
+                    <h2>Unikatni mašni plašči</h2>
+                    <img src="ponudba/naslovneSlike/plascunikat.JPG">
+                </div>
+
+                <div class="vsiIzdelki" onclick="pokazi('prtoltarni', 54)">
+                    <h2>Oltarni prti</h2>
+                    <img src="ponudba/naslovneSlike/prtoltarni.JPG">
+                </div>
+
+                <div class="vsiIzdelki" onclick="pokazi('taber', 5)">
+                    <h2>Obnova tabernaklja</h2>
+                    <img src="ponudba/naslovneSlike/taber.JPG">
+                </div>
+
+                <div class="vsiIzdelki" onclick="pokazi('prtnarodni', 50)">
+                    <h2>Narodne Vezenine</h2>
+                    <img src="ponudba/naslovneSlike/prtnarodni.JPG">
+                </div>
+
+                <div class="vsiIzdelki" onclick="pokazi('prtkrstni', 17)">
+                    <h2>Krstni prtički</h2>
+                    <img src="ponudba/naslovneSlike/prtkrstni.JPG">
+                </div>
+
+                <div class="vsiIzdelki" onclick="pokazi('pluviali', 37)">
+                    <h2>Pluviali</h2>
+                    <img src="ponudba/naslovneSlike/pluvial.JPG">
+                </div>
+
+                <div class="vsiIzdelki" onclick="pokazi('prapori', 13)">
+                    <h2>Prapori</h2>
+                    <img src="ponudba/naslovneSlike/prapor.JPG">
+                </div>
+
+                <div class="vsiIzdelki" onclick="pokazi('risvez', 21)">
+                    <h2>Rišelje vezenine</h2>
+                    <img src="ponudba/naslovneSlike/riselje.JPG">
+                </div>
+
+                <div class="vsiIzdelki" onclick="pokazi('stolebel', 56)">
+                    <h2>Bele štole</h2>
+                    <img src="ponudba/naslovneSlike/stolabela.JPG">
+                </div>
+                
+                <div class="vsiIzdelki" onclick="pokazi('stolerdec', 33)">
+                    <h2>Rdeče štole</h2>
+                    <img src="ponudba/naslovneSlike/stolerdec.JPG">
+                </div>
+                
+                <div class="vsiIzdelki" onclick="pokazi('stolevijola', 38)">
+                    <h2>Vijolične štole</h2>
+                    <img src="ponudba/naslovneSlike/stolavijola.JPG">
+                </div>
+                
+                <div class="vsiIzdelki" onclick="pokazi('stolezelen', 30)">
+                    <h2>Zelene štole</h2>
+                    <img src="ponudba/naslovneSlike/stolazelen.JPG">
+                </div>
+                <div class="vsiIzdelki" onclick="pokazi('stolecrne', 2)">
+                    <h2>Črne štole</h2>
+                    <img src="ponudba/naslovneSlike/crnastola.JPG">
+                </div>
+                
+                <div class="vsiIzdelki" onclick="pokazi('stoleunikat', 22)">
+                    <h2>Unikatne štole</h2>
+                    <img src="ponudba/naslovneSlike/stoleunikat.JPG">
+                </div>
+
+                <div class="vsiIzdelki" onclick="pokazi('velum', 11)">
+                    <h2>Velumi</h2>
+                    <img src="ponudba/naslovneSlike/velum.JPG">
+                </div>
+
+                <div class="vsiIzdelki" onclick="pokazi('razno', 19)">
+                    <h2>Razno</h2>
+                    <img src="ponudba/naslovneSlike/razno.JPG">
+                </div>
+            </div>
+            </div>
+            <footer>
+                <a class="logo" href="https://www.facebook.com/people/%C5%A0iviljstvo-Mitra/100009433814975" target="_blank"><img src="slike/logo/fb.png"></a>
+                <a class="logo" href="https://plus.google.com/u/2/108047242406110429831/about" target="_blank"><img src="slike/logo/g+.png"></a>
+                <a class="logo" href="https://twitter.com/SiviljstvoMitra" target="_blank"><img src="slike/logo/tw.png"></a>
+                <a class="jezik" href="index.html"><img src="slike/slo.png"></a>
+                <a class="jezik" href="index-nem.html"><img src="slike/nem.png"></a>
+                <p>Šiviljstvo Mitra © 2013 - <span id="leto"></span><script>var d = new Date(); document.getElementById("leto").innerHTML = d.getFullYear();</script> &nbsp; Vse pravice pridržane.</p>
+                <p>Izdelava spletne strani: Mihael Golob</p>
+            </footer>
+    </body>
+    <script src="javascript.js"></script>
+</html>

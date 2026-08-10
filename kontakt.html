@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Šiviljstvo Mitra</title>
+		<meta charset="UTF-8">
+        <link href="style.css" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        
+        <!-- Fonts -->
+        <link href='https://fonts.googleapis.com/css?family=Great+Vibes' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Sacramento' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
+        <!-- Zemljevid -->
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCv8Xq3V-XG59xN5biJwhZy3vnlu7LD8k4&sensor=false"></script>
+        
+        <script>
+			var myCenter=new google.maps.LatLng(46.170070,14.593872);
+
+				function initialize()
+				{
+				var mapProp = {
+ 				center:myCenter,
+				zoom:9,
+  				panControl:true,
+    			zoomControl:true,
+    			mapTypeControl:true,
+    			scaleControl:true,
+    			streetViewControl:true,
+    			overviewMapControl:true,
+    			rotateControl:true,    
+    			mapTypeId: google.maps.MapTypeId.ROADMAP
+  				};
+
+				var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+				var marker=new google.maps.Marker({
+  				position:myCenter,
+  				animation:google.maps.Animation.BOUNCE
+  				});
+  				
+  				var infowindow = new google.maps.InfoWindow({
+  				content:"Šiviljstvo MITRA"+"<br/>"+"Slovenija, Preserje pri Radomljah, Kamniška c. 43"+"<br/>"+"1235 Radomlje"
+  				});
+
+				google.maps.event.addListener(marker, 'click', function() {
+  				infowindow.open(map,marker);
+  				});
+  				
+
+
+				marker.setMap(map);
+				}		
+				google.maps.event.addDomListener(window, 'load', initialize);
+		</script>
+    </head>
+    <body>
+        <div class="menu">
+            <div class="gradient">
+                <img src="slike/siviljstvo.png">
+                <img src="slike/mitra.png">
+                <img src="slike/logo.png">
+                <img src="slike/betka.png">
+            </div>
+            <a href="index.html" class="zavihek zavihekPrvi">Domov</a>
+            <a href="ponudba.html" class="zavihek">Ponudba</a>
+            <a href="kontakt.html" class="zavihekTrenutni">Kontakt</a>
+        </div>
+        <div class="holder">
+            <div class="kontakt">
+                <h1 class="onas">Kontakt:</h1>
+                <p class="c">> Betka Golob s. p. - Šiviljstvo Mitra</p>
+                <p class="c">> Slovenija, Preserje pri Radomljah, Kamniška cesta 43</p>
+                <p class="c">> 1235 Radomlje</p>
+                <p class="c">> Telefon: 01 72 27 804</p>
+                <p class="c">> GSM: 041 941 611</p>
+                <p class="c">> Elektronska pošta: siviljstvo.mitra@siol.net</p>
+            </div>
+            <div id="googleMap" class="map"></div>
+        </div>    
+        <footer>
+            <a class="logo" href="https://www.facebook.com/people/%C5%A0iviljstvo-Mitra/100009433814975" target="_blank"><img src="slike/logo/fb.png"></a>
+            <a class="logo" href="https://plus.google.com/u/2/108047242406110429831/about" target="_blank"><img src="slike/logo/g+.png"></a>
+            <a class="logo" href="https://twitter.com/SiviljstvoMitra" target="_blank"><img src="slike/logo/tw.png"></a>
+            <a class="jezik" href="index.html"><img src="slike/slo.png"></a>
+            <a class="jezik" href="index-nem.html"><img src="slike/nem.png"></a>
+            <p>Šiviljstvo Mitra © 2013 - <span id="leto"></span><script>var d = new Date(); document.getElementById("leto").innerHTML = d.getFullYear();</script> &nbsp; Vse pravice pridržane.</p>
+            <p>Izdelava spletne strani: Mihael Golob</p>
+        </footer>
+    </body>
+</html>
