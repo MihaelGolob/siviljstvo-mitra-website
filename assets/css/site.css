@@ -110,16 +110,15 @@ a:hover{ color:var(--color-accent); }
   background:var(--ink); display:flex; flex-direction:column; overflow-y:auto;
   transition:transform .28s ease;
 }
-.side-brand{
-  background:var(--color-bg); padding:26px 26px 20px;
-  display:flex; flex-direction:column; gap:6px; align-items:center;
+/* brand block reproduced from the 2013 site: one radial-gradient panel
+   holding all four marks (legacy/style.css .menu .gradient) */
+.side-gradient{
+  background:radial-gradient(circle, #d2fdb6, #226393 80%);
+  display:flex; flex-direction:column; align-items:center;
+  padding:10px 0 18px; flex:none;
 }
-.side-brand img{ height:auto; }
-.side-rule{ height:1px; background:var(--sky); opacity:.55; flex:none; }
-/* the dove as on the old site: original art, unfiltered — the white fill
-   carries the shape on the navy ground, the line art keeps its detail */
-.side-mark{ display:flex; justify-content:center; padding:20px 26px 0; }
-.side-mark img{ height:auto; }
+.side-gradient img{ height:auto; padding:5px 25px; }
+.side-gradient img:first-child{ margin-bottom:-30px; }
 .side-nav{ display:flex; flex-direction:column; padding:22px 18px; gap:2px; }
 .side-nav a{
   font-family:var(--font-heading); font-weight:400; font-size:24px; letter-spacing:.01em;

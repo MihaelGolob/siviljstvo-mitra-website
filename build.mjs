@@ -69,12 +69,10 @@ for (const id of site.hero.images) {
   job(`assets/images/slider/${id}.png`, `assets/images/derived/hero/${id}-640.webp`,
     (i) => i.resize({ width: 640 }).webp({ quality: 82 }));
 }
-job("assets/images/brand/siviljstvo.png", "assets/images/derived/brand/siviljstvo-300.png",
-  (i) => i.resize({ width: 300 }).png({ compressionLevel: 9 }));
-job("assets/images/brand/mitra.png", "assets/images/derived/brand/mitra-240.png",
-  (i) => i.resize({ width: 240 }).png({ compressionLevel: 9 }));
-job("assets/images/brand/logo.png", "assets/images/derived/brand/logo-280.png",
-  (i) => i.resize({ width: 280 }).png({ compressionLevel: 9 }));
+for (const b of ["siviljstvo", "mitra", "logo", "betka"]) {
+  job(`assets/images/brand/${b}.png`, `assets/images/derived/brand/${b}-400.png`,
+    (i) => i.resize({ width: 400, withoutEnlargement: false }).png({ compressionLevel: 9 }));
+}
 
 async function runJobs(pool = 8) {
   let done = 0;
