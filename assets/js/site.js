@@ -70,7 +70,7 @@
   function isLbOpen() { return !lb.hidden; }
   function pad(n) { return String(n).padStart(3, "0"); }
   function url(slug, n, size) {
-    return BASE + "assets/images/derived/gallery/" + slug + "/" + pad(n) + "-" + size + ".webp";
+    return BASE + "assets/images/gallery/" + slug + "/" + pad(n) + "-" + size + ".webp";
   }
   function refCode(slug, n) { return slug.toUpperCase() + "-" + pad(n); }
   function photoAlt(name, n) {

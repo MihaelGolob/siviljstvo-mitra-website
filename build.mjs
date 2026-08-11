@@ -56,27 +56,27 @@ function job(src, out, fn) {
 }
 
 for (const c of Object.values(cats)) {
-  const src = `assets/images/${c.cover}`;
+  const src = `sources/${c.cover}`;
   for (const w of [320, 640]) {
-    job(src, `assets/images/derived/covers/${c.slug}-${w}.webp`,
+    job(src, `assets/images/covers/${c.slug}-${w}.webp`,
       (i) => i.resize(w, w, { fit: "cover" }).webp({ quality: 78 }));
-    job(src, `assets/images/derived/covers/${c.slug}-${w}.jpg`,
+    job(src, `assets/images/covers/${c.slug}-${w}.jpg`,
       (i) => i.resize(w, w, { fit: "cover" }).jpeg({ quality: 78, progressive: true }));
   }
   for (let n = 1; n <= c.count; n++) {
-    const g = `assets/images/gallery/${c.slug}/${String(n).padStart(3, "0")}.jpg`;
-    const base = `assets/images/derived/gallery/${c.slug}/${String(n).padStart(3, "0")}`;
+    const g = `sources/gallery/${c.slug}/${String(n).padStart(3, "0")}.jpg`;
+    const base = `assets/images/gallery/${c.slug}/${String(n).padStart(3, "0")}`;
     job(g, `${base}-640.webp`, (i) =>
       i.resize(640, 640, { fit: "inside", withoutEnlargement: true }).webp({ quality: 78 }));
     job(g, `${base}-160.webp`, (i) => i.resize(160, 160, { fit: "cover" }).webp({ quality: 70 }));
   }
 }
 for (const id of site.heroImages) {
-  job(`assets/images/slider/${id}.png`, `assets/images/derived/hero/${id}-640.webp`,
+  job(`sources/slider/${id}.png`, `assets/images/hero/${id}-640.webp`,
     (i) => i.resize({ width: 640 }).webp({ quality: 82 }));
 }
 for (const b of ["siviljstvo", "mitra", "logo", "betka"]) {
-  job(`assets/images/brand/${b}.png`, `assets/images/derived/brand/${b}-400.webp`,
+  job(`sources/brand/${b}.png`, `assets/images/brand/${b}-400.webp`,
     (i) => i.resize({ width: 400 }).webp({ quality: 90 })); // alpha preserved
 }
 
@@ -124,7 +124,7 @@ function fragments(locale) {
   const photosLabel = (n) => countLabel(t.plurals.photos, n);
 
   const tilePicture = (slug) => {
-    const d = `${P}assets/images/derived/covers/${slug}`;
+    const d = `${P}assets/images/covers/${slug}`;
     return `<span class="plate"><picture>
 <source type="image/webp" srcset="${d}-320.webp 320w, ${d}-640.webp 640w" sizes="(max-width:640px) 45vw, 200px">
 <img src="${d}-320.jpg" srcset="${d}-320.jpg 320w, ${d}-640.jpg 640w" sizes="(max-width:640px) 45vw, 200px" alt="${esc(name(slug))} – Šiviljstvo Mitra" width="320" height="320" loading="lazy">
@@ -142,7 +142,7 @@ ${tilePicture(slug)}
 <span class="tile-name">${esc(name(slug))}</span>
 </a>`;
 
-  const heroSrc = (id) => `${P}assets/images/derived/hero/${id}-640.webp`;
+  const heroSrc = (id) => `${P}assets/images/hero/${id}-640.webp`;
   const first = site.heroImages[0];
   const heroDots = site.heroImages.length > 1
     ? `      <div class="hero-dots">
@@ -236,7 +236,7 @@ function hreflangs(file) {
 
 const year = new Date().getFullYear();
 const layout = read("src/templates/layout.html");
-const ogImage = `${site.siteUrl}/assets/images/derived/covers/${site.highlights[0]}-640.jpg`;
+const ogImage = `${site.siteUrl}/assets/images/covers/${site.highlights[0]}-640.jpg`;
 
 function page(locale, file, { pageKey, content, overlays = "", current }) {
   const f = fragments(locale);
@@ -399,11 +399,11 @@ for (const locale of LOCALES) {
 }
 for (const c of Object.values(cats)) {
   for (let n = 1; n <= c.count; n++) {
-    const p = `assets/images/derived/gallery/${c.slug}/${String(n).padStart(3, "0")}`;
+    const p = `assets/images/gallery/${c.slug}/${String(n).padStart(3, "0")}`;
     if (!exists(`${p}-640.webp`)) errors.push(`missing derivative ${p}-640.webp`);
     if (!exists(`${p}-160.webp`)) errors.push(`missing derivative ${p}-160.webp`);
   }
-  if (exists(`assets/images/derived/gallery/${c.slug}/${String(c.count + 1).padStart(3, "0")}-640.webp`))
+  if (exists(`assets/images/gallery/${c.slug}/${String(c.count + 1).padStart(3, "0")}-640.webp`))
     errors.push(`${c.slug}: derivative beyond catalog count ${c.count}`);
 }
 

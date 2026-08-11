@@ -1,5 +1,5 @@
 {
-  "_note": "Generated from the filesystem during the pre-overhaul cleanup. Do not hand-edit counts or paths - regenerate instead. Paths are relative to assets/images/.",
+  "_note": "Generated manifest of the photo catalogue. Paths are relative to sources/. Counts and paths mirror the filesystem - do not hand-edit; keep gallery folders contiguous (001.jpg..NNN.jpg) and update counts together with the files.",
   "categories": [
     {
       "slug": "albe",
@@ -271,32 +271,6 @@
       "count": 11,
       "cover": "gallery/velum/001.jpg"
     }
-  ],
-  "slider": [
-    "slider/01.png",
-    "slider/02.png",
-    "slider/03.png",
-    "covers/duhovniske.png",
-    "slider/04.png",
-    "slider/05.png",
-    "slider/06.png",
-    "slider/07.png",
-    "slider/08.png",
-    "slider/09.png",
-    "slider/10.png"
-  ],
-  "featured": [
-    "featured/bandera1.jpg",
-    "featured/bandera2.jpg",
-    "featured/bandera3.jpg",
-    "featured/bandera4.jpg",
-    "featured/bandera5.jpg",
-    "featured/bandera6.jpg",
-    "featured/pulover.png",
-    "featured/talar1.jpg",
-    "featured/talar2.jpg",
-    "featured/velikonocni1.png",
-    "featured/velikonocni2.png"
   ],
   "crossListed": [
     [
