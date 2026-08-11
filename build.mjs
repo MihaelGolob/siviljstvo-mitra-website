@@ -208,14 +208,22 @@ window.LB_STRINGS=${JSON.stringify({ photoAlt: t.ui.photoAlt })};
 }
 
 /* ── layout tokens shared per (locale, page) ───────────────────────────── */
-const LANG_LABELS = { sl: "SLO", de: "DEU", en: "ENG" };
+const LANG_NAMES = { sl: "Slovensko", de: "Deutsch", en: "English" };
+
+/* Inline SVG flags, 3:2, flat style. The Slovenian flag carries a simplified
+   coat of arms — without it the tricolour is indistinguishable from Russia's. */
+const FLAGS = {
+  sl: `<svg viewBox="0 0 24 16" width="27" height="18" aria-hidden="true"><rect width="24" height="16" fill="#fff"/><rect y="5.33" width="24" height="10.67" fill="#005DA4"/><rect y="10.67" width="24" height="5.33" fill="#DD0B31"/><g transform="translate(3.6,1.1)"><path d="M0 0h5v4.1c0 1.5-1.2 2.6-2.5 3.1C1.2 6.7 0 5.6 0 4.1Z" fill="#005DA4"/><path d="M.6 4.4 1.7 2.6l.8 1 .8-1.4 1.1 2.2c-.4 1-1 1.6-1.9 1.9-.9-.3-1.5-.9-1.9-1.9Z" fill="#fff"/></g></svg>`,
+  de: `<svg viewBox="0 0 24 16" width="27" height="18" aria-hidden="true"><rect width="24" height="5.33" fill="#000"/><rect y="5.33" width="24" height="5.34" fill="#DD0000"/><rect y="10.67" width="24" height="5.33" fill="#FFCE00"/></svg>`,
+  en: `<svg viewBox="0 0 24 16" width="27" height="18" aria-hidden="true"><rect width="24" height="16" fill="#012169"/><path d="M0 0 24 16M24 0 0 16" stroke="#fff" stroke-width="3.2"/><path d="M0 0 24 16M24 0 0 16" stroke="#C8102E" stroke-width="1.4"/><path d="M12 0v16M0 8h24" stroke="#fff" stroke-width="5.4"/><path d="M12 0v16M0 8h24" stroke="#C8102E" stroke-width="3.2"/></svg>`
+};
 
 function switcher(locale, file) {
   return LOCALES.map((l) => {
     if (l === locale)
-      return `    <span aria-current="true">${LANG_LABELS[l]}</span>`;
+      return `    <span aria-current="true" title="${LANG_NAMES[l]}">${FLAGS[l]}</span>`;
     const back = dirOf(locale) ? "../" : "";
-    return `    <a href="${back}${dirOf(l)}${file}" lang="${i18n[l].htmlLang}">${LANG_LABELS[l]}</a>`;
+    return `    <a href="${back}${dirOf(l)}${file}" lang="${i18n[l].htmlLang}" aria-label="${LANG_NAMES[l]}" title="${LANG_NAMES[l]}">${FLAGS[l]}</a>`;
   }).join("\n");
 }
 
