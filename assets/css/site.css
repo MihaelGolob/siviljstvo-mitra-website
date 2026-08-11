@@ -116,10 +116,10 @@ a:hover{ color:var(--color-accent); }
 }
 .side-brand img{ height:auto; }
 .side-rule{ height:1px; background:var(--sky); opacity:.55; flex:none; }
-.side-mark{ display:flex; justify-content:center; padding:20px 26px 4px; }
-/* the source art is a white dove with a black outline; flatten to a solid
-   white silhouette so it reads on the navy ground */
-.side-mark img{ height:auto; filter:brightness(0) invert(1); opacity:.9; }
+/* the dove as on the old site: original art, unfiltered — the white fill
+   carries the shape on the navy ground, the line art keeps its detail */
+.side-mark{ display:flex; justify-content:center; padding:20px 26px 0; }
+.side-mark img{ height:auto; }
 .side-nav{ display:flex; flex-direction:column; padding:22px 18px; gap:2px; }
 .side-nav a{
   font-family:var(--font-heading); font-weight:400; font-size:24px; letter-spacing:.01em;
@@ -145,37 +145,47 @@ a:hover{ color:var(--color-accent); }
 
 .main{ margin-left:var(--side-w); }
 
-/* ── hero (light — redesigned for the transparent montages) ───────────── */
+/* ── hero (navy band, as in the concept; the transparent montage cut-outs
+      composite straight onto the ink ground) ──────────────────────────── */
 .hero{
-  display:grid; grid-template-columns:minmax(300px, 1fr) minmax(280px, 1.05fr);
+  display:grid; grid-template-columns:minmax(300px, 600px) minmax(280px, 520px);
   gap:clamp(24px, 4vw, 56px); align-items:center;
-  padding:clamp(40px, 7vw, 88px) var(--pad-x) clamp(28px, 4vw, 48px);
-  max-width:1180px;
+  padding:clamp(40px, 7vw, 88px) var(--pad-x) clamp(40px, 6vw, 72px);
+  background:var(--ink);
 }
 .hero-copy{ display:flex; flex-direction:column; gap:16px; }
+.hero-copy .kicker{ color:var(--sky); }
+.hero-copy .rule{ background:var(--sky); }
 .hero-copy h1{
-  font-size:clamp(34px, 4.6vw, 56px); font-weight:400;
+  font-size:clamp(34px, 4.6vw, 56px); font-weight:400; color:#fff;
   line-height:1.06; letter-spacing:-.015em; text-wrap:balance;
 }
 .lead{
   font-size:clamp(15px, 1.6vw, 17px); line-height:1.7; max-width:52ch;
-  color:color-mix(in srgb, var(--color-text) 78%, transparent);
+  color:rgba(255,255,255,.82);
 }
 .hero-actions{ display:flex; flex-wrap:wrap; gap:12px; margin-top:8px; }
-.hero-art{ position:relative; aspect-ratio:771/450; }
-.hero-art picture, .hero-art img{ position:absolute; inset:0; width:100%; height:100%; }
-.hero-art img{ object-fit:contain; }
-.hero-art picture{ opacity:0; }
-.hero-art picture:first-child{ opacity:1; }
-@keyframes heroFade{ 0%{opacity:0} 3%{opacity:1} 33.33%{opacity:1} 38%{opacity:0} 100%{opacity:0} }
-
-/* crossfade runs only on wide screens without reduced-motion */
-@media (min-width:781px) and (prefers-reduced-motion: no-preference){
-  .hero:not(.hero-single) .hero-art picture{ animation:heroFade 21s linear infinite; }
-  .hero:not(.hero-single) .hero-art picture:nth-child(1){ animation-delay:-.63s; }
-  .hero:not(.hero-single) .hero-art picture:nth-child(2){ animation-delay:6.37s; }
-  .hero:not(.hero-single) .hero-art picture:nth-child(3){ animation-delay:13.37s; }
+.hero .btn-primary{ color:var(--sky); border-color:var(--sky); }
+.hero .btn-primary:hover{ background:rgba(90,171,230,.14); color:var(--sky); }
+.hero .btn-primary:active{ background:rgba(90,171,230,.24); }
+.hero .btn-secondary{ color:#fff; border-color:rgba(255,255,255,.35); }
+.hero .btn-secondary:hover{ background:rgba(255,255,255,.1); color:#fff; }
+.hero .btn-secondary:active{ background:rgba(255,255,255,.18); }
+.hero-art{ display:flex; flex-direction:column; gap:8px; }
+.hero-frame{ aspect-ratio:771/450; }
+.hero-frame img{ width:100%; height:100%; object-fit:contain; }
+.hero-dots{ display:flex; justify-content:center; gap:4px; }
+.hero-dot{
+  width:36px; height:36px; display:grid; place-items:center;
+  background:transparent; border:0; padding:0; cursor:pointer;
 }
+.hero-dot span{
+  width:9px; height:9px; border-radius:50%;
+  background:transparent; border:1px solid rgba(255,255,255,.55);
+  transition:background .15s, border-color .15s;
+}
+.hero-dot:hover span{ border-color:var(--sky); }
+.hero-dot[aria-current="true"] span{ background:var(--sky); border-color:var(--sky); }
 
 /* ── home sections ────────────────────────────────────────────────────── */
 .pillars{
@@ -375,10 +385,7 @@ a:hover{ color:var(--color-accent); }
 }
 @media (max-width:780px){
   .hero{ grid-template-columns:1fr; }
-  .hero-art{ max-width:480px; }
-  /* one static montage on small screens; the hidden ones are loading="lazy",
-     so display:none keeps them from ever being fetched */
-  .hero-art picture:not(:first-child){ display:none; }
+  .hero-art{ max-width:480px; width:100%; margin:0 auto; }
 }
 @media (max-width:640px){
   .lb-arrow{ width:42px; height:42px; }

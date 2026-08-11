@@ -66,18 +66,15 @@ for (const c of Object.values(bySlug)) {
   }
 }
 for (const id of site.hero.images) {
-  const src = `assets/images/slider/${id}.png`;
-  job(src, `assets/images/derived/hero/${id}-640.webp`,
+  job(`assets/images/slider/${id}.png`, `assets/images/derived/hero/${id}-640.webp`,
     (i) => i.resize({ width: 640 }).webp({ quality: 82 }));
-  job(src, `assets/images/derived/hero/${id}-640.png`,
-    (i) => i.resize({ width: 640 }).png({ compressionLevel: 9 }));
 }
 job("assets/images/brand/siviljstvo.png", "assets/images/derived/brand/siviljstvo-300.png",
   (i) => i.resize({ width: 300 }).png({ compressionLevel: 9 }));
 job("assets/images/brand/mitra.png", "assets/images/derived/brand/mitra-240.png",
   (i) => i.resize({ width: 240 }).png({ compressionLevel: 9 }));
-job("assets/images/brand/logo.png", "assets/images/derived/brand/logo-176.png",
-  (i) => i.resize({ width: 176 }).png({ compressionLevel: 9 }));
+job("assets/images/brand/logo.png", "assets/images/derived/brand/logo-280.png",
+  (i) => i.resize({ width: 280 }).png({ compressionLevel: 9 }));
 
 async function runJobs(pool = 8) {
   let done = 0;
@@ -133,16 +130,19 @@ ${tilePicture(c, { lazy: true })}
 </a>`;
 }
 
-const heroImages = site.hero.images.map((id, i) => {
-  const alt = site.hero.alts[id] || "";
-  const eager = i === 0
-    ? ' fetchpriority="high"'
-    : ' loading="lazy"'; // display:none on mobile → never fetched there
-  return `      <picture>
-<source type="image/webp" srcset="assets/images/derived/hero/${id}-640.webp">
-<img src="assets/images/derived/hero/${id}-640.png" alt="${esc(alt)}" width="640" height="373"${eager}>
-</picture>`;
-}).join("\n");
+/* one <img> whose src the dots swap — no crossfade, nothing preloaded that
+   the visitor didn't ask for */
+const heroSrc = (id) => `assets/images/derived/hero/${id}-640.webp`;
+const first = site.hero.images[0];
+const heroDots = site.hero.images.length > 1
+  ? `      <div class="hero-dots">
+${site.hero.images.map((id, i) => `        <button type="button" class="hero-dot" data-src="${heroSrc(id)}" data-alt="${esc(site.hero.alts[id] || "")}" aria-label="Slika ${i + 1}: ${esc(site.hero.alts[id] || "")}"${i === 0 ? ' aria-current="true"' : ""}><span></span></button>`).join("\n")}
+      </div>`
+  : "";
+const heroArt = `      <div class="hero-frame">
+        <img id="hero-img" src="${heroSrc(first)}" alt="${esc(site.hero.alts[first] || "")}" width="640" height="373" fetchpriority="high">
+      </div>
+${heroDots}`;
 
 const pillars = site.pillars.map((p) =>
   `    <div class="pillar"><h2>${esc(p.title)}</h2><p>${esc(p.text)}</p></div>`).join("\n");
@@ -243,11 +243,10 @@ page("index.html", {
   description: site.pages.home.description,
   current: "home",
   content: render(read("src/templates/home.html"), {
-    HERO_SINGLE: site.hero.images.length > 1 ? "" : " hero-single",
     HERO_KICKER: esc(site.hero.kicker),
     HERO_TITLE: esc(site.hero.title),
     HERO_LEAD: esc(site.hero.lead),
-    HERO_IMAGES: heroImages,
+    HERO_ART: heroArt,
     PILLARS: pillars,
     CAT_COUNT: String(catalog.categories.length),
     HIGHLIGHT_TILES: site.highlights.map((s) => tileLink(bySlug[s])).join("\n")

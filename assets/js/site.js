@@ -22,6 +22,23 @@
     scrim.addEventListener("click", function () { setNav(false); });
   }
 
+  /* ── hero slider dots ──────────────────────────────────────────────── */
+  var heroImg = document.getElementById("hero-img");
+  if (heroImg) {
+    var dots = document.querySelectorAll(".hero-dot");
+    dots.forEach(function (d) {
+      d.addEventListener("click", function () {
+        heroImg.src = d.dataset.src;
+        heroImg.alt = d.dataset.alt;
+        dots.forEach(function (o) { o.setAttribute("aria-current", o === d ? "true" : "false"); });
+      });
+    });
+    // warm the other montages after load so dot clicks swap instantly
+    window.addEventListener("load", function () {
+      dots.forEach(function (d) { if (d.dataset.src !== heroImg.src) (new Image()).src = d.dataset.src; });
+    });
+  }
+
   /* ── lightbox ──────────────────────────────────────────────────────── */
   var lb = document.getElementById("lb");
   var CATALOG = window.CATALOG || null;
