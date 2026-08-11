@@ -25,18 +25,60 @@
     scrim.addEventListener("click", function () { setNav(false); });
   }
 
-  /* ── hero slider dots ──────────────────────────────────────────────── */
+  /* ── hero slider: dots + 7s autoplay + swipe ───────────────────────── */
   var heroImg = document.getElementById("hero-img");
   if (heroImg) {
     var dots = document.querySelectorAll(".hero-dot");
-    dots.forEach(function (d) {
-      d.addEventListener("click", function () {
-        heroImg.src = d.dataset.src;
-        heroImg.alt = d.dataset.alt;
-        dots.forEach(function (o) { o.setAttribute("aria-current", o === d ? "true" : "false"); });
-      });
+    var heroIdx = 0;
+    var heroTimer = null;
+    var HERO_MS = 7000;
+
+    var heroShow = function (n) {
+      heroIdx = ((n % dots.length) + dots.length) % dots.length;
+      var d = dots[heroIdx];
+      heroImg.src = d.dataset.src;
+      heroImg.alt = d.dataset.alt;
+      dots.forEach(function (o) { o.setAttribute("aria-current", o === d ? "true" : "false"); });
+    };
+
+    /* autoplay; a manual change restarts the countdown so the image the
+       visitor just picked doesn't get swapped away early */
+    var heroAuto = dots.length > 1 &&
+      !(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
+    var heroRestart = function () {
+      if (heroTimer) clearInterval(heroTimer);
+      heroTimer = null;
+      if (heroAuto && !document.hidden) {
+        heroTimer = setInterval(function () { heroShow(heroIdx + 1); }, HERO_MS);
+      }
+    };
+
+    dots.forEach(function (d, i) {
+      d.addEventListener("click", function () { heroShow(i); heroRestart(); });
     });
-    // warm the other montages after load so dot clicks swap instantly
+
+    /* swipe left/right on the hero image */
+    var frame = heroImg.closest(".hero-frame") || heroImg;
+    var hx = null, hy = null;
+    frame.addEventListener("touchstart", function (e) {
+      if (e.touches.length !== 1) { hx = null; return; }
+      hx = e.touches[0].clientX; hy = e.touches[0].clientY;
+    }, { passive: true });
+    frame.addEventListener("touchend", function (e) {
+      if (hx === null) return;
+      var dx = e.changedTouches[0].clientX - hx;
+      var dy = e.changedTouches[0].clientY - hy;
+      hx = null;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+        heroShow(heroIdx + (dx < 0 ? 1 : -1));
+        heroRestart();
+      }
+    }, { passive: true });
+
+    document.addEventListener("visibilitychange", heroRestart);
+    heroRestart();
+
+    // warm the other montages after load so swaps are instant
     window.addEventListener("load", function () {
       dots.forEach(function (d) {
         if (new URL(d.dataset.src, location.href).href !== heroImg.src) (new Image()).src = d.dataset.src;
