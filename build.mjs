@@ -305,7 +305,6 @@ for (const locale of LOCALES) {
     content: render(read("src/templates/home.html"), {
       HERO_KICKER: esc(t.hero.kicker),
       HERO_TITLE: esc(t.hero.title),
-      HERO_LEAD: esc(t.hero.lead),
       HERO_ART: f.heroArt,
       BROWSE_LABEL: esc(t.ui.browseCatalogue),
       CONTACT_LABEL: esc(t.ui.contact),

@@ -50,11 +50,14 @@
   "hero": {
     "kicker": "Betka Golob s. p.",
     "title": "Handmade church vestments and folk embroidery",
-    "lead": "Chasubles, stoles, albs, altar cloths and banners — sewn, embroidered and restored to order.",
     "alts": {
-      "09": "Church banner with an inscription and a black robe with a Maltese cross",
+      "04": "Grey chasuble with a golden cross pattern, and a cream and a purple stole",
       "05": "Red embroidered set with a Richelieu cloth",
-      "08": "White and purple lectern falls with embroidered symbols"
+      "06": "Baptismal cloths embroidered with angels, a candle and an inscription",
+      "07": "Alb and a restored tabernacle with gold embroidery",
+      "08": "White and purple lectern falls with embroidered symbols",
+      "09": "Church banner with an inscription and a black robe with a Maltese cross",
+      "10": "Church banner with an image of Mary and Child and a Slovenian inscription"
     }
   },
   "pillars": [

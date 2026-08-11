@@ -182,10 +182,6 @@ a:hover{ color:var(--color-accent); }
   font-size:clamp(34px, 4.6vw, 56px); font-weight:400; color:#fff;
   line-height:1.06; letter-spacing:-.015em; text-wrap:balance;
 }
-.lead{
-  font-size:clamp(15px, 1.6vw, 17px); line-height:1.7; max-width:52ch;
-  color:rgba(255,255,255,.82);
-}
 .hero-actions{ display:flex; flex-wrap:wrap; gap:12px; margin-top:8px; }
 .hero .btn-primary{ color:var(--sky); border-color:var(--sky); }
 .hero .btn-primary:hover{ background:rgba(90,171,230,.14); color:var(--sky); }

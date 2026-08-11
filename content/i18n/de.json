@@ -50,11 +50,14 @@
   "hero": {
     "kicker": "Betka Golob s. p.",
     "title": "Anfertigung von Kirchenparamenten und Volksstickereien",
-    "lead": "Kaseln, Stolen, Alben, Altartücher und Kirchenfahnen — auf Bestellung genäht, bestickt und restauriert.",
     "alts": {
-      "09": "Kirchenfahne mit Aufschrift und schwarzer Mantel mit Malteserkreuz",
+      "04": "Graue Kasel mit goldenem Kreuzmuster sowie eine helle und eine violette Stola",
       "05": "Rotes Set mit Stickereien und Richelieu-Tuch",
-      "08": "Weißer und violetter Ambobehang mit gestickten Symbolen"
+      "06": "Tauftücher mit gestickten Engeln, Kerze und Aufschrift",
+      "07": "Albe und restaurierter Tabernakel mit Goldstickerei",
+      "08": "Weißer und violetter Ambobehang mit gestickten Symbolen",
+      "09": "Kirchenfahne mit Aufschrift und schwarzer Mantel mit Malteserkreuz",
+      "10": "Kirchenfahne mit dem Bild Marias mit Kind und Aufschrift"
     }
   },
   "pillars": [
