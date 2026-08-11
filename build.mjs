@@ -273,7 +273,7 @@ page("kontakt.html", {
     POSTAL: esc(biz.postal), COUNTRY: esc(biz.country),
     PHONE_TEL: biz.phone.tel, PHONE_LABEL: biz.phone.label,
     MOBILE_TEL: biz.mobile.tel, MOBILE_LABEL: biz.mobile.label, EMAIL: biz.email,
-    LAT: String(biz.coords.lat), LON: String(biz.coords.lon),
+    MAPS_EMBED: biz.mapsEmbed, MAPS_LINK: biz.mapsLink,
     REVIEWS: reviewsHtml
   })
 });

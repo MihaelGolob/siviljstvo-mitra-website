@@ -22,10 +22,9 @@
         <section class="block">
           <h2 class="block-title">Kje smo</h2>
           <div class="map-card">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-            <p class="map-addr">{{STREET}}, {{LOCALITY}}<br>{{POSTAL}}</p>
-            <a class="btn btn-primary" href="https://www.openstreetmap.org/?mlat={{LAT}}&amp;mlon={{LON}}#map=15/{{LAT}}/{{LON}}" target="_blank" rel="noopener">Odpri zemljevid</a>
+            <iframe src="{{MAPS_EMBED}}" title="Zemljevid — Šiviljstvo Mitra, {{STREET}}, {{LOCALITY}}" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
           </div>
+          <p class="map-fallback">{{STREET}}, {{LOCALITY}} — <a href="{{MAPS_LINK}}" target="_blank" rel="noopener">Odpri v Google Zemljevidih</a></p>
         </section>
       </div>
     </div>
