@@ -171,7 +171,7 @@ a:hover{ color:var(--color-accent); }
       composite straight onto the ink ground) ──────────────────────────── */
 .hero{
   display:grid; grid-template-columns:minmax(300px, 600px) minmax(280px, 520px);
-  gap:clamp(24px, 4vw, 56px); align-items:center;
+  gap:clamp(24px, 4vw, 56px); align-items:center; justify-content:center;
   padding:clamp(40px, 7vw, 88px) var(--pad-x) clamp(40px, 6vw, 72px);
   background:var(--ink);
 }
@@ -209,7 +209,7 @@ a:hover{ color:var(--color-accent); }
 .pillars{
   display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
   gap:clamp(24px, 4vw, 56px);
-  padding:clamp(30px, 4vw, 52px) var(--pad-x); max-width:1180px;
+  padding:clamp(30px, 4vw, 52px) var(--pad-x); max-width:1180px; margin-inline:auto;
 }
 .pillar h2{
   font-size:13px; letter-spacing:.08em; text-transform:uppercase;
@@ -217,7 +217,7 @@ a:hover{ color:var(--color-accent); }
 }
 .pillar p{ line-height:1.7; }
 
-.highlights{ padding:clamp(10px, 2vw, 24px) var(--pad-x) clamp(48px, 7vw, 96px); max-width:1180px; }
+.highlights{ padding:clamp(10px, 2vw, 24px) var(--pad-x) clamp(48px, 7vw, 96px); max-width:1180px; margin-inline:auto; }
 .sec-head{
   display:flex; align-items:baseline; justify-content:space-between; gap:20px; flex-wrap:wrap;
   border-top:1px solid var(--color-divider); padding-top:18px; margin-bottom:26px;
@@ -245,7 +245,7 @@ a:hover{ color:var(--color-accent); }
 .tile-count{ font-size:12px; font-variant-numeric:tabular-nums; color:color-mix(in srgb, var(--color-text) 65%, transparent); }
 
 /* ── catalogue / generic page ─────────────────────────────────────────── */
-.page{ padding:clamp(34px, 5vw, 64px) var(--pad-x) clamp(56px, 8vw, 104px); max-width:1180px; }
+.page{ padding:clamp(34px, 5vw, 64px) var(--pad-x) clamp(56px, 8vw, 104px); max-width:1180px; margin-inline:auto; }
 .page-title{ margin:10px 0 0; font-weight:400; font-size:clamp(36px, 6vw, 64px); letter-spacing:-.02em; }
 .group{ margin-top:clamp(40px, 5vw, 64px); }
 .group-head{
@@ -302,6 +302,7 @@ a:hover{ color:var(--color-accent); }
   border-top:1px solid var(--color-divider);
   padding:clamp(28px, 4vw, 44px) var(--pad-x);
   display:flex; flex-wrap:wrap; gap:20px; align-items:center; justify-content:space-between;
+  max-width:1180px; margin-inline:auto;
 }
 .foot-lines{ display:flex; flex-direction:column; gap:6px; }
 .foot p{ font-size:13px; color:color-mix(in srgb, var(--color-text) 68%, transparent); }
