@@ -141,11 +141,10 @@ a:hover{ color:var(--color-accent); }
   border-radius:var(--radius-md); text-decoration:none;
 }
 .side-lang svg{ display:block; border-radius:2px; }
-.side-lang a{ opacity:.5; transition:opacity .15s; }
-.side-lang a:hover{ opacity:1; background:rgba(255,255,255,.09); }
-.side-lang span[aria-current="true"]{
-  opacity:1; outline:1px solid var(--sky); outline-offset:-6px;
-}
+/* current locale at full opacity, the others faded until hover */
+.side-lang a{ opacity:.45; transition:opacity .15s; }
+.side-lang a:hover{ opacity:1; }
+.side-lang span[aria-current="true"]{ opacity:1; }
 .side-place{
   font-size:11px; letter-spacing:.14em; text-transform:uppercase;
   color:rgba(255,255,255,.5); font-family:var(--font-heading);
