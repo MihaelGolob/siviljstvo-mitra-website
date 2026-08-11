@@ -3,271 +3,136 @@
   "categories": [
     {
       "slug": "albe",
-      "name": {
-        "sl": "Albe - roket(koretelj)",
-        "de": "Alben",
-        "en": null
-      },
       "count": 19,
       "cover": "gallery/albe/018.jpg"
     },
     {
       "slug": "baldahini",
-      "name": {
-        "sl": "Baldahini",
-        "de": "Baldachine",
-        "en": null
-      },
       "count": 19,
       "cover": "gallery/baldahini/001.jpg"
     },
     {
       "slug": "bandera",
-      "name": {
-        "sl": "Bandera",
-        "de": "Banner",
-        "en": null
-      },
       "count": 30,
       "cover": "gallery/bandera/030.jpg"
     },
     {
       "slug": "dalmatika",
-      "name": {
-        "sl": "Dalmatika",
-        "de": "Dalmatiken",
-        "en": null
-      },
       "count": 7,
       "cover": "gallery/dalmatika/004.jpg"
     },
     {
       "slug": "duhovniske",
-      "name": {
-        "sl": "Duhovniške srajce",
-        "de": "Priesterhemden",
-        "en": null
-      },
       "count": 7,
       "cover": "covers/duhovniske.png"
     },
     {
       "slug": "masnibel",
-      "name": {
-        "sl": "Beli mašni plašči",
-        "de": "Weiß kaseln",
-        "en": null
-      },
       "count": 76,
       "cover": "covers/masnibel.jpg"
     },
     {
       "slug": "masnirdec",
-      "name": {
-        "sl": "Rdeči mašni plašči",
-        "de": "Rot kaseln",
-        "en": null
-      },
       "count": 41,
       "cover": "gallery/masnirdec/039.jpg"
     },
     {
       "slug": "masniunikat",
-      "name": {
-        "sl": "Unikatni mašni plašči",
-        "de": "einzigartige kaseln",
-        "en": null
-      },
       "count": 31,
       "cover": "gallery/masniunikat/001.jpg"
     },
     {
       "slug": "masnivijola",
-      "name": {
-        "sl": "Vijolični mašni plašči",
-        "de": "Lila kaseln",
-        "en": null
-      },
       "count": 32,
       "cover": "gallery/masnivijola/030.jpg"
     },
     {
       "slug": "masnizelen",
-      "name": {
-        "sl": "Zelen mašni plašči",
-        "de": "Grün kaseln",
-        "en": null
-      },
       "count": 39,
       "cover": "gallery/masnizelen/038.jpg"
     },
     {
       "slug": "mitre",
-      "name": {
-        "sl": "Mitre",
-        "de": "Mitren",
-        "en": null
-      },
       "count": 19,
       "cover": "gallery/mitre/019.jpg"
     },
     {
       "slug": "pluviali",
-      "name": {
-        "sl": "Pluviali",
-        "de": "chormantel",
-        "en": null
-      },
       "count": 37,
       "cover": "gallery/pluviali/001.jpg"
     },
     {
       "slug": "prapori",
-      "name": {
-        "sl": "Prapori",
-        "de": "aushangfahne",
-        "en": null
-      },
       "count": 13,
       "cover": "gallery/prapori/001.jpg"
     },
     {
       "slug": "prtkrstni",
-      "name": {
-        "sl": "Krstni prtički",
-        "de": "Tücher für die Heilige Taufe",
-        "en": null
-      },
       "count": 17,
       "cover": "gallery/prtkrstni/002.jpg"
     },
     {
       "slug": "prtnarodni",
-      "name": {
-        "sl": "Narodne Vezenine",
-        "de": "folkstickerei",
-        "en": null
-      },
       "count": 50,
       "cover": "gallery/prtnarodni/050.jpg"
     },
     {
       "slug": "prtoltarni",
-      "name": {
-        "sl": "Oltarni prti",
-        "de": "Altartücher",
-        "en": null
-      },
       "count": 50,
       "cover": "gallery/prtoltarni/001.jpg"
     },
     {
       "slug": "razno",
-      "name": {
-        "sl": "Razno",
-        "de": "Verschiedenes",
-        "en": null
-      },
       "count": 18,
       "cover": "gallery/razno/001.jpg"
     },
     {
       "slug": "risvez",
-      "name": {
-        "sl": "Rišelje vezenine",
-        "de": "Rišelje vezenine",
-        "en": null
-      },
       "count": 21,
       "cover": "gallery/risvez/019.jpg"
     },
     {
       "slug": "stolebel",
-      "name": {
-        "sl": "Bele štole",
-        "de": "Weiß stolen",
-        "en": null
-      },
       "count": 56,
       "cover": "gallery/stolebel/013.jpg"
     },
     {
       "slug": "stolecrne",
-      "name": {
-        "sl": "Črne štole",
-        "de": "Schwarz stolen",
-        "en": null
-      },
       "count": 2,
       "cover": "gallery/stolecrne/001.jpg"
     },
     {
       "slug": "stolediakon",
-      "name": {
-        "sl": "Diakonske štole",
-        "de": "Diakonstolen",
-        "en": null
-      },
       "count": 16,
       "cover": "gallery/stolediakon/001.jpg"
     },
     {
       "slug": "stolerdec",
-      "name": {
-        "sl": "Rdeče štole",
-        "de": "Rot stolen",
-        "en": null
-      },
       "count": 33,
       "cover": "gallery/stolerdec/025.jpg"
     },
     {
       "slug": "stoleunikat",
-      "name": {
-        "sl": "Unikatne štole",
-        "de": "einzigartige stolen",
-        "en": null
-      },
       "count": 22,
       "cover": "gallery/stoleunikat/003.jpg"
     },
     {
       "slug": "stolevijola",
-      "name": {
-        "sl": "Vijolične štole",
-        "de": "Lila stolen",
-        "en": null
-      },
       "count": 38,
       "cover": "covers/stolevijola.jpg"
     },
     {
       "slug": "stolezelen",
-      "name": {
-        "sl": "Zelene štole",
-        "de": "Grün stolen",
-        "en": null
-      },
       "count": 29,
       "cover": "gallery/stolezelen/029.jpg"
     },
     {
       "slug": "taber",
-      "name": {
-        "sl": "Obnova tabernaklja",
-        "de": "Restaurierung das tabernakel",
-        "en": null
-      },
       "count": 5,
       "cover": "gallery/taber/003.jpg"
     },
     {
       "slug": "velum",
-      "name": {
-        "sl": "Velumi",
-        "de": "segenvelen",
-        "en": null
-      },
       "count": 11,
       "cover": "gallery/velum/001.jpg"
     }

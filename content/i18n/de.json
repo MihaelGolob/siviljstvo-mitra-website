@@ -2,6 +2,7 @@
   "htmlLang": "de",
   "ogLocale": "de_DE",
   "ui": {
+    "skipToContent": "Zum Inhalt",
     "menuAria": "Menü",
     "mainNavAria": "Hauptmenü",
     "langAria": "Sprache",
@@ -14,11 +15,12 @@
     "allGroups": "Alle {n} Gruppen →",
     "catKicker": "Katalog",
     "catTitle": "Unsere Arbeiten",
-    "catLead": "{groups} Gruppen, {photos} Fotos ausgeführter Arbeiten. Klicken Sie auf eine Gruppe, um die Galerie zu öffnen.",
     "addressTitle": "Anschrift",
     "reachUsTitle": "Schreiben Sie uns oder rufen Sie an",
     "phoneLabel": "Telefon",
     "mobileLabel": "Mobil",
+    "phoneDisplay": "+386 1 722 78 04",
+    "mobileDisplay": "+386 41 941 611",
     "whereTitle": "Wo wir sind",
     "mapIframeTitle": "Karte — Šiviljstvo Mitra",
     "mapOpen": "In Google Maps öffnen",
@@ -30,7 +32,6 @@
     "lbClose": "Galerie schließen",
     "lbPrev": "Vorheriges Foto",
     "lbNext": "Nächstes Foto",
-    "lbHint": "Geben Sie bei Ihrer Anfrage bitte die Foto-Kennung an (z. B. {ref}) — so wissen wir sofort, welches Stück Sie meinen.",
     "photoAlt": "{name} – Foto {n}",
     "copyright": "Šiviljstvo Mitra © 2013 – {year}   Alle Rechte vorbehalten.",
     "credit": "Erstellung der Website: Mihael Golob",
@@ -49,7 +50,7 @@
   "hero": {
     "kicker": "Betka Golob s. p.",
     "title": "Anfertigung von Kirchenparamenten und Volksstickereien",
-    "lead": "Handarbeit aus Preserje pri Radomljah, Slowenien. Kaseln, Stolen, Alben, Altartücher und Kirchenfahnen — auf Bestellung genäht, bestickt und restauriert.",
+    "lead": "Kaseln, Stolen, Alben, Altartücher und Kirchenfahnen — auf Bestellung genäht, bestickt und restauriert.",
     "alts": {
       "09": "Kirchenfahne mit Aufschrift und schwarzer Mantel mit Malteserkreuz",
       "05": "Rotes Set mit Stickereien und Richelieu-Tuch",

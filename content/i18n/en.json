@@ -2,6 +2,7 @@
   "htmlLang": "en",
   "ogLocale": "en_GB",
   "ui": {
+    "skipToContent": "Skip to content",
     "menuAria": "Menu",
     "mainNavAria": "Main menu",
     "langAria": "Language",
@@ -14,11 +15,12 @@
     "allGroups": "All {n} groups →",
     "catKicker": "Catalogue",
     "catTitle": "Our work",
-    "catLead": "{groups} groups, {photos} photos of finished work. Click a group to open its gallery.",
     "addressTitle": "Address",
     "reachUsTitle": "Write or call us",
     "phoneLabel": "Phone",
     "mobileLabel": "Mobile",
+    "phoneDisplay": "+386 1 722 78 04",
+    "mobileDisplay": "+386 41 941 611",
     "whereTitle": "Where we are",
     "mapIframeTitle": "Map — Šiviljstvo Mitra",
     "mapOpen": "Open in Google Maps",
@@ -30,7 +32,6 @@
     "lbClose": "Close gallery",
     "lbPrev": "Previous photo",
     "lbNext": "Next photo",
-    "lbHint": "When enquiring, please quote the photo reference (e.g. {ref}) — it tells us immediately which piece you have in mind.",
     "photoAlt": "{name} – photo {n}",
     "copyright": "Šiviljstvo Mitra © 2013 – {year}   All rights reserved.",
     "credit": "Website by Mihael Golob",
@@ -49,7 +50,7 @@
   "hero": {
     "kicker": "Betka Golob s. p.",
     "title": "Handmade church vestments and folk embroidery",
-    "lead": "Handcrafted in Preserje pri Radomljah, Slovenia. Chasubles, stoles, albs, altar cloths and banners — sewn, embroidered and restored to order.",
+    "lead": "Chasubles, stoles, albs, altar cloths and banners — sewn, embroidered and restored to order.",
     "alts": {
       "09": "Church banner with an inscription and a black robe with a Maltese cross",
       "05": "Red embroidered set with a Richelieu cloth",

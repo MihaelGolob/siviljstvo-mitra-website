@@ -2,6 +2,7 @@
   "htmlLang": "sl",
   "ogLocale": "sl_SI",
   "ui": {
+    "skipToContent": "Na vsebino",
     "menuAria": "Meni",
     "mainNavAria": "Glavni meni",
     "langAria": "Jezik",
@@ -14,11 +15,12 @@
     "allGroups": "Vseh {n} skupin →",
     "catKicker": "Katalog",
     "catTitle": "Naši izdelki",
-    "catLead": "{groups} skupin, {photos} fotografij izdelanih del. Kliknite skupino za ogled galerije.",
     "addressTitle": "Naslov",
     "reachUsTitle": "Pišite ali pokličite",
     "phoneLabel": "Telefon",
     "mobileLabel": "GSM",
+    "phoneDisplay": "01 72 27 804",
+    "mobileDisplay": "041 941 611",
     "whereTitle": "Kje smo",
     "mapIframeTitle": "Zemljevid — Šiviljstvo Mitra",
     "mapOpen": "Odpri v Google Zemljevidih",
@@ -30,7 +32,6 @@
     "lbClose": "Zapri galerijo",
     "lbPrev": "Prejšnja fotografija",
     "lbNext": "Naslednja fotografija",
-    "lbHint": "Ob povpraševanju navedite oznako fotografije (npr. {ref}) — tako bomo takoj vedeli, kateri izdelek imate v mislih.",
     "photoAlt": "{name} – fotografija {n}",
     "copyright": "Šiviljstvo Mitra © 2013 – {year}   Vse pravice pridržane.",
     "credit": "Izdelava spletne strani: Mihael Golob",
@@ -53,7 +54,7 @@
   "hero": {
     "kicker": "Betka Golob s. p.",
     "title": "Izdelava cerkvenih paramentov in narodnih vezenin",
-    "lead": "Ročno delo iz Preserij pri Radomljah. Mašni plašči, štole, albe, oltarni prti, bandera in prapori — šivano, vezeno in obnovljeno po naročilu.",
+    "lead": "Mašni plašči, štole, albe, oltarni prti, bandera in prapori — šivano, vezeno in obnovljeno po naročilu.",
     "alts": {
       "09": "Bandera z napisom Sveta vera, bodi vam luč in črn plašč z malteškim križem",
       "05": "Rdeč komplet z vezeninami in rišelje prt",

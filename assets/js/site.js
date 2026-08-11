@@ -6,6 +6,9 @@
   var toggle = document.getElementById("nav-toggle");
   var side = document.getElementById("side");
   var scrim = document.getElementById("scrim");
+  var lb = document.getElementById("lb");
+
+  function isLbOpen() { return !!(lb && !lb.hidden); }
 
   function setNav(open) {
     side.dataset.open = open ? "1" : "0";
@@ -35,12 +38,13 @@
     });
     // warm the other montages after load so dot clicks swap instantly
     window.addEventListener("load", function () {
-      dots.forEach(function (d) { if (d.dataset.src !== heroImg.src) (new Image()).src = d.dataset.src; });
+      dots.forEach(function (d) {
+        if (new URL(d.dataset.src, location.href).href !== heroImg.src) (new Image()).src = d.dataset.src;
+      });
     });
   }
 
   /* ── lightbox ──────────────────────────────────────────────────────── */
-  var lb = document.getElementById("lb");
   var CATALOG = window.CATALOG || null;
   if (!lb || !CATALOG) {
     document.addEventListener("keydown", function (e) {
@@ -54,7 +58,6 @@
     img: document.getElementById("lb-img"),
     ref: document.getElementById("lb-ref"),
     counter: document.getElementById("lb-counter"),
-    hint: document.getElementById("lb-hint"),
     strip: document.getElementById("lb-strip"),
     close: document.getElementById("lb-close"),
     prev: document.getElementById("lb-prev"),
@@ -67,7 +70,14 @@
   var BASE = window.ASSET_BASE || "";
   var STR = window.LB_STRINGS || { photoAlt: "{name} – {n}" };
 
-  function isLbOpen() { return !lb.hidden; }
+  /* everything behind the dialog goes inert so focus and screen readers
+     can't wander into the page while the gallery is open */
+  var pageRoots = [document.querySelector(".skip"), document.querySelector(".bar"),
+    side, document.getElementById("main")];
+  function setPageInert(on) {
+    pageRoots.forEach(function (r) { if (r) r.inert = on; });
+  }
+
   function pad(n) { return String(n).padStart(3, "0"); }
   function url(slug, n, size) {
     return BASE + "assets/images/gallery/" + slug + "/" + pad(n) + "-" + size + ".webp";
@@ -101,7 +111,6 @@
     cur = { slug: slug, name: c.n, count: c.c };
     opener = fromEl || null;
     el.title.textContent = c.n;
-    el.hint.textContent = (window.LB_HINT || "").replace("{ref}", refCode(slug, c.s || 1));
 
     el.strip.innerHTML = "";
     for (var i = 1; i <= c.c; i++) {
@@ -125,6 +134,7 @@
     }
 
     lb.hidden = false;
+    setPageInert(true);
     document.body.classList.add("lock");
     show(c.s || 1);
     if (history.replaceState) history.replaceState(null, "", "#" + slug);
@@ -133,6 +143,7 @@
 
   function close() {
     lb.hidden = true;
+    setPageInert(false);
     document.body.classList.toggle("lock", navOpen());
     el.img.src = "";
     el.strip.innerHTML = "";

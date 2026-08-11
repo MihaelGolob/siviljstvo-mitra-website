@@ -9,14 +9,12 @@
     "locality": "Preserje pri Radomljah",
     "postal": "1235 Radomlje",
     "country": "Slovenija",
-    "phone": { "label": "01 72 27 804", "tel": "+38617227804" },
-    "mobile": { "label": "041 941 611", "tel": "+38641941611" },
+    "phone": { "tel": "+38617227804" },
+    "mobile": { "tel": "+38641941611" },
     "email": "siviljstvo.mitra@siol.net",
     "coords": { "lat": 46.17007, "lon": 14.593872 },
     "mapsLink": "https://maps.google.com/?cid=6092183114659812480",
-    "mapsEmbed": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2764!2d14.5938683!3d46.1699988!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x476535a59441445f:0x548bc843d7ee5480!2sGolob%20Betka%20s.p.%20-%20%C5%A0iviljstvo%20Mitra!5e0!3m2!1ssl!2ssi!4v1754900000000",
-    "facebook": "https://www.facebook.com/people/%C5%A0iviljstvo-Mitra/100009433814975",
-    "twitter": "https://twitter.com/SiviljstvoMitra"
+    "mapsEmbed": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2764!2d14.5938683!3d46.1699988!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x476535a59441445f:0x548bc843d7ee5480!2sGolob%20Betka%20s.p.%20-%20%C5%A0iviljstvo%20Mitra!5e0!3m2!1ssl!2ssi!4v1754900000000"
   },
   "googlePlaceId": "ChIJX0RBlKU1ZUcRgFTu10PIi1Q",
   "searchConsoleToken": null,

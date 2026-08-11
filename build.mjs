@@ -13,9 +13,10 @@
  */
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 
-const ROOT = path.dirname(new URL(import.meta.url).pathname);
+const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const read = (p) => fs.readFileSync(path.join(ROOT, p), "utf8");
 const exists = (p) => fs.existsSync(path.join(ROOT, p));
 function write(p, s) {
@@ -79,6 +80,9 @@ for (const b of ["siviljstvo", "mitra", "logo", "betka"]) {
   job(`sources/brand/${b}.png`, `assets/images/brand/${b}-400.webp`,
     (i) => i.resize({ width: 400 }).webp({ quality: 90 })); // alpha preserved
 }
+job("sources/brand/logo.png", "apple-touch-icon.png", (i) =>
+  i.flatten({ background: "#0f3a57" })
+    .resize(180, 180, { fit: "contain", background: "#0f3a57" }).png());
 
 async function runJobs(pool = 8) {
   let done = 0;
@@ -126,8 +130,8 @@ function fragments(locale) {
   const tilePicture = (slug) => {
     const d = `${P}assets/images/covers/${slug}`;
     return `<span class="plate"><picture>
-<source type="image/webp" srcset="${d}-320.webp 320w, ${d}-640.webp 640w" sizes="(max-width:640px) 45vw, 200px">
-<img src="${d}-320.jpg" srcset="${d}-320.jpg 320w, ${d}-640.jpg 640w" sizes="(max-width:640px) 45vw, 200px" alt="${esc(name(slug))} – Šiviljstvo Mitra" width="320" height="320" loading="lazy">
+<source type="image/webp" srcset="${d}-320.webp 320w, ${d}-640.webp 640w" sizes="(max-width:360px) 88vw, (max-width:640px) 45vw, 200px">
+<img src="${d}-320.jpg" srcset="${d}-320.jpg 320w, ${d}-640.jpg 640w" sizes="(max-width:360px) 88vw, (max-width:640px) 45vw, 200px" alt="${esc(name(slug))} – Šiviljstvo Mitra" width="320" height="320" loading="lazy">
 </picture></span>`;
   };
 
@@ -175,20 +179,18 @@ ${slugs.map(tileButton).join("\n")}
       <img id="lb-img" alt="">
       <figcaption class="lb-cap">
         <span class="lb-ref"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--sky)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.6 13.4 12 22H2v-10l8.6-8.6a2 2 0 0 1 2.8 0l7.2 7.2a2 2 0 0 1 0 2.8Z"/><circle cx="7.5" cy="16.5" r="1.2"/></svg><span id="lb-ref"></span></span>
-        <span class="lb-counter" id="lb-counter"></span>
+        <span class="lb-counter" id="lb-counter" aria-live="polite"></span>
       </figcaption>
     </figure>
     <button type="button" class="lb-arrow" id="lb-next" aria-label="${esc(t.ui.lbNext)}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 5 16 12 9 19"/></svg></button>
   </div>
   <div class="lb-foot">
-    <p class="lb-hint" id="lb-hint"></p>
     <div class="lb-strip" id="lb-strip"></div>
   </div>
 </div>
 <script>
 window.ASSET_BASE=${JSON.stringify(P)};
 window.CATALOG=${JSON.stringify(Object.fromEntries(Object.values(cats).map((c) => [c.slug, { n: name(c.slug), c: c.count, s: c.start }])))};
-window.LB_HINT=${JSON.stringify(t.ui.lbHint)};
 window.LB_STRINGS=${JSON.stringify({ photoAlt: t.ui.photoAlt })};
 </script>`;
 
@@ -221,7 +223,7 @@ const FLAGS = {
 function switcher(locale, file) {
   return LOCALES.map((l) => {
     if (l === locale)
-      return `    <span aria-current="true" title="${LANG_NAMES[l]}">${FLAGS[l]}</span>`;
+      return `    <span role="img" aria-current="true" aria-label="${LANG_NAMES[l]}" title="${LANG_NAMES[l]}">${FLAGS[l]}</span>`;
     const back = dirOf(locale) ? "../" : "";
     return `    <a href="${back}${dirOf(l)}${file}" lang="${i18n[l].htmlLang}" aria-label="${LANG_NAMES[l]}" title="${LANG_NAMES[l]}">${FLAGS[l]}</a>`;
   }).join("\n");
@@ -256,9 +258,8 @@ function page(locale, file, { pageKey, content, overlays = "", current }) {
       postalCode: biz.postal.split(" ")[0],
       addressCountry: "SI"
     },
-    geo: { "@type": "GeoCoordinates", latitude: biz.coords.lat, longitude: biz.coords.lon },
-    sameAs: [biz.facebook, biz.twitter]
-  });
+    geo: { "@type": "GeoCoordinates", latitude: biz.coords.lat, longitude: biz.coords.lon }
+  }).replace(/</g, "\\u003c"); // no </script> breakout from embedded JSON
   const html = render(layout, {
     LANG: t.htmlLang,
     TITLE: esc(t.pages[pageKey].title),
@@ -271,6 +272,7 @@ function page(locale, file, { pageKey, content, overlays = "", current }) {
       ? `<meta name="google-site-verification" content="${esc(site.searchConsoleToken)}">\n` : "",
     JSONLD: jsonld,
     P: f.P,
+    SKIP_LABEL: esc(t.ui.skipToContent),
     MENU_ARIA: esc(t.ui.menuAria),
     MAIN_NAV_ARIA: esc(t.ui.mainNavAria),
     LANG_ARIA: esc(t.ui.langAria),
@@ -281,11 +283,10 @@ function page(locale, file, { pageKey, content, overlays = "", current }) {
     CUR_PONUDBA: current === "ponudba" ? ' aria-current="page"' : "",
     CUR_KONTAKT: current === "kontakt" ? ' aria-current="page"' : "",
     SWITCHER: switcher(locale, file),
-    MOBILE_TEL: biz.mobile.tel, MOBILE_LABEL: biz.mobile.label, EMAIL: biz.email,
+    MOBILE_TEL: biz.mobile.tel, MOBILE_LABEL: esc(t.ui.mobileDisplay), EMAIL: biz.email,
     CONTENT: content,
     COPYRIGHT: esc(fmt(t.ui.copyright, { year })),
     CREDIT: esc(t.ui.credit),
-    FACEBOOK: biz.facebook, TWITTER: biz.twitter,
     OVERLAYS: overlays
   });
   write(`${dirOf(locale)}${file}`, html);
@@ -322,10 +323,6 @@ for (const locale of LOCALES) {
     content: render(read("src/templates/ponudba.html"), {
       CAT_KICKER: esc(t.ui.catKicker),
       CAT_TITLE: esc(t.ui.catTitle),
-      CAT_LEAD: esc(fmt(t.ui.catLead, {
-        groups: catalog.categories.length,
-        photos: totalPhotos
-      })),
       GROUPS: f.groupsHtml
     })
   });
@@ -341,8 +338,8 @@ for (const locale of LOCALES) {
       REACH_US_TITLE: esc(t.ui.reachUsTitle),
       PHONE_LABEL_UI: esc(t.ui.phoneLabel),
       MOBILE_LABEL_UI: esc(t.ui.mobileLabel),
-      PHONE_TEL: biz.phone.tel, PHONE_LABEL: biz.phone.label,
-      MOBILE_TEL: biz.mobile.tel, MOBILE_LABEL: biz.mobile.label, EMAIL: biz.email,
+      PHONE_TEL: biz.phone.tel, PHONE_LABEL: esc(t.ui.phoneDisplay),
+      MOBILE_TEL: biz.mobile.tel, MOBILE_LABEL: esc(t.ui.mobileDisplay), EMAIL: biz.email,
       WHERE_TITLE: esc(t.ui.whereTitle),
       MAP_IFRAME_TITLE: esc(t.ui.mapIframeTitle),
       MAPS_EMBED: biz.mapsEmbed, MAPS_LINK: biz.mapsLink,
@@ -416,7 +413,7 @@ const DIST = path.join(ROOT, "dist");
 fs.rmSync(DIST, { recursive: true, force: true });
 fs.mkdirSync(DIST);
 const SHIP = ["index.html", "ponudba.html", "kontakt.html", "de", "en",
-  "assets", "favicon.ico", "robots.txt", "sitemap.xml"];
+  "assets", "favicon.ico", "apple-touch-icon.png", "robots.txt", "sitemap.xml"];
 for (const entry of SHIP) fs.cpSync(path.join(ROOT, entry), path.join(DIST, entry), { recursive: true });
 const sum = (d) => fs.readdirSync(d, { withFileTypes: true })
   .reduce((a, e) => a + (e.isDirectory() ? sum(path.join(d, e.name)) : fs.statSync(path.join(d, e.name)).size), 0);
