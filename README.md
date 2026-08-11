@@ -43,7 +43,7 @@ edit `content/site.json`, rebuild.
 | `assets/images/slider/` | yes | 10 homepage rotation images |
 | `assets/images/featured/` | yes | 11 homepage feature photos (cassocks, sweaters, Easter doilies, banners) |
 | `assets/images/brand/` | yes | Logo, wordmarks, language flags |
-| `assets/images/derived/` | yes | Generated WebP/JPEG/PNG derivatives — never edit, rebuild instead |
+| `assets/images/derived/` | yes | Generated derivatives (WebP + JPEG tile fallbacks) — never edit, rebuild instead |
 | `content/catalog.json` | — | Generated catalogue manifest (see below) |
 | `content/site.json` | — | Authored copy: display names, groups, hero, contact |
 | `content/notes-legacy.md` | — | Copy, contact details, and SEO metadata salvaged from the old site |
@@ -52,6 +52,12 @@ edit `content/site.json`, rebuild.
 | `legacy/` | **no** | The 2013 site, verbatim, as copy reference — see `legacy/README.md` |
 
 Exclude `archive/` and `legacy/` from any build or deploy step.
+
+**Image formats:** everything visitors download is WebP (galleries, tiles, hero, brand), plus small
+JPEG fallbacks for the catalogue tiles. The files under `assets/images/{gallery,covers,slider,featured,brand}/`
+are **build sources** — the only surviving originals of these photos. No page links to them, so a
+space-conscious deploy can exclude those five directories (~81 MB) and ship only `derived/` (~17 MB).
+Never re-encode or overwrite the sources: every derivative is generated from them.
 
 ## `content/catalog.json`
 

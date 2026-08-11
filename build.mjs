@@ -76,8 +76,8 @@ for (const id of site.heroImages) {
     (i) => i.resize({ width: 640 }).webp({ quality: 82 }));
 }
 for (const b of ["siviljstvo", "mitra", "logo", "betka"]) {
-  job(`assets/images/brand/${b}.png`, `assets/images/derived/brand/${b}-400.png`,
-    (i) => i.resize({ width: 400 }).png({ compressionLevel: 9 }));
+  job(`assets/images/brand/${b}.png`, `assets/images/derived/brand/${b}-400.webp`,
+    (i) => i.resize({ width: 400 }).webp({ quality: 90 })); // alpha preserved
 }
 
 async function runJobs(pool = 8) {
