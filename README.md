@@ -27,9 +27,22 @@ machine-German.
 | `content/` | **no** | `catalog.json` (generated manifest), `site.json` (config), `i18n/{sl,de,en}.json` (all copy), `notes-legacy.md` (salvage) |
 | `build.mjs`, `src/templates/` | **no** | Build script and language-neutral page templates |
 
-The deploy rule is one line: **repo root minus `sources/`, `content/`, `src/` and `node_modules/`**
-(robots.txt disallows them defensively). Everything visitors download is WebP, plus small JPEG
-fallbacks for the catalogue tiles.
+## Deploying
+
+Every successful build assembles **`dist/`** — the exact upload artefact (~15 MB), nothing else in
+it, refreshed only when all checks pass:
+
+1. `npm run build`
+2. Upload the **contents** of `dist/` to the web root with your FTP client, replacing what's there.
+
+**First deploy over the 2013 site: delete the old files on the server first** (`slike/`, `ponudba/`,
+`javascript/`, `index-nem.html`, `kontakt-nem.html`, `ponudba-nem.html`, `sneg.js`, `javascript.js`,
+`style.css` at the root). FTP upload doesn't remove server-side files, and stale 2013 pages would
+otherwise stay live and indexed alongside the new site.
+
+`dist/` is gitignored; robots.txt defensively disallows `sources/`, `src/` and `node_modules/` in
+case the whole repo is ever uploaded by mistake. Everything visitors download is WebP, plus small
+JPEG fallbacks for the catalogue tiles.
 
 ## Languages
 

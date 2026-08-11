@@ -411,5 +411,17 @@ if (errors.length) {
   for (const e of errors.slice(0, 20)) console.error("  " + e);
   process.exit(1);
 }
+/* ── dist/ — the exact upload artefact, assembled only after checks pass ── */
+const DIST = path.join(ROOT, "dist");
+fs.rmSync(DIST, { recursive: true, force: true });
+fs.mkdirSync(DIST);
+const SHIP = ["index.html", "ponudba.html", "kontakt.html", "de", "en",
+  "assets", "favicon.ico", "robots.txt", "sitemap.xml"];
+for (const entry of SHIP) fs.cpSync(path.join(ROOT, entry), path.join(DIST, entry), { recursive: true });
+const sum = (d) => fs.readdirSync(d, { withFileTypes: true })
+  .reduce((a, e) => a + (e.isDirectory() ? sum(path.join(d, e.name)) : fs.statSync(path.join(d, e.name)).size), 0);
+const distBytes = sum(DIST);
+
 console.log(`ok: ${LOCALES.length * FILES.length} pages (${LOCALES.join(", ")}), sitemap, robots; ${generated} derivative(s) generated`);
 console.log(`    categories: ${catalog.categories.length}, photos: ${totalPhotos}`);
+console.log(`    dist/ ready to upload: ${(distBytes / 1e6).toFixed(1)} MB`);
