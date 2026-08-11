@@ -376,7 +376,10 @@ a:hover{ color:var(--color-accent); }
 
 /* ── breakpoints ──────────────────────────────────────────────────────── */
 @media (max-width:900px){
-  .side{ transform:translateX(-100%); width:264px; box-shadow:0 0 40px rgba(10,39,57,.35); }
+  /* the drawer opens below the fixed bar so the brand panel is never
+     covered, and the burger stays reachable to close it */
+  .side{ top:var(--bar-h); transform:translateX(-100%); width:264px; box-shadow:0 0 40px rgba(10,39,57,.35); }
+  .scrim{ top:var(--bar-h); }
   .side[data-open="1"]{ transform:none; }
   .main{ margin-left:0; padding-top:var(--bar-h); }
   .bar{ display:flex; }
