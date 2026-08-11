@@ -1,0 +1,170 @@
+/* Šiviljstvo Mitra — drawer + gallery lightbox. No dependencies. */
+(function () {
+  "use strict";
+
+  /* ── mobile drawer ─────────────────────────────────────────────────── */
+  var toggle = document.getElementById("nav-toggle");
+  var side = document.getElementById("side");
+  var scrim = document.getElementById("scrim");
+
+  function setNav(open) {
+    side.dataset.open = open ? "1" : "0";
+    scrim.dataset.open = open ? "1" : "0";
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    document.body.classList.toggle("lock", open || isLbOpen());
+    if (open) side.querySelector("a").focus();
+    else toggle.focus();
+  }
+  function navOpen() { return side.dataset.open === "1"; }
+
+  if (toggle) {
+    toggle.addEventListener("click", function () { setNav(!navOpen()); });
+    scrim.addEventListener("click", function () { setNav(false); });
+  }
+
+  /* ── lightbox ──────────────────────────────────────────────────────── */
+  var lb = document.getElementById("lb");
+  var CATALOG = window.CATALOG || null;
+  if (!lb || !CATALOG) {
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && toggle && navOpen()) setNav(false);
+    });
+    return;
+  }
+
+  var el = {
+    title: document.getElementById("lb-title"),
+    img: document.getElementById("lb-img"),
+    ref: document.getElementById("lb-ref"),
+    counter: document.getElementById("lb-counter"),
+    hint: document.getElementById("lb-hint"),
+    strip: document.getElementById("lb-strip"),
+    close: document.getElementById("lb-close"),
+    prev: document.getElementById("lb-prev"),
+    next: document.getElementById("lb-next")
+  };
+
+  var cur = null;   // { slug, name, count }
+  var idx = 1;      // 1-based photo number
+  var opener = null;
+
+  function isLbOpen() { return !lb.hidden; }
+  function pad(n) { return String(n).padStart(3, "0"); }
+  function url(slug, n, size) {
+    return "assets/images/derived/gallery/" + slug + "/" + pad(n) + "-" + size + ".webp";
+  }
+  function refCode(slug, n) { return slug.toUpperCase() + "-" + pad(n); }
+
+  function show(n) {
+    idx = ((n - 1 + cur.count) % cur.count) + 1;
+    el.img.src = url(cur.slug, idx, 640);
+    el.img.alt = cur.name + " – fotografija " + pad(idx);
+    el.ref.textContent = refCode(cur.slug, idx);
+    el.counter.textContent = idx + " / " + cur.count;
+    var ths = el.strip.children;
+    for (var i = 0; i < ths.length; i++) {
+      ths[i].setAttribute("aria-current", i === idx - 1 ? "true" : "false");
+    }
+    if (ths[idx - 1] && ths[idx - 1].scrollIntoView) {
+      ths[idx - 1].scrollIntoView({ block: "nearest", inline: "center" });
+    }
+    // warm the neighbours so paging feels instant
+    (new Image()).src = url(cur.slug, (idx % cur.count) + 1, 640);
+    (new Image()).src = url(cur.slug, ((idx - 2 + cur.count) % cur.count) + 1, 640);
+  }
+
+  function open(slug, fromEl) {
+    var c = CATALOG[slug];
+    if (!c) return;
+    cur = { slug: slug, name: c.n, count: c.c };
+    opener = fromEl || null;
+    el.title.textContent = c.n;
+    el.hint.textContent = (window.LB_HINT || "").replace("{ref}", refCode(slug, c.s || 1));
+
+    el.strip.innerHTML = "";
+    for (var i = 1; i <= c.c; i++) {
+      var b = document.createElement("button");
+      b.className = "lb-th";
+      b.type = "button";
+      b.setAttribute("aria-label", c.n + " – fotografija " + pad(i));
+      var box = document.createElement("span");
+      var im = document.createElement("img");
+      im.loading = "lazy";
+      im.alt = "";
+      im.src = url(slug, i, 160);
+      box.appendChild(im);
+      var lab = document.createElement("span");
+      lab.className = "lb-th-label";
+      lab.textContent = pad(i);
+      b.appendChild(box);
+      b.appendChild(lab);
+      b.addEventListener("click", (function (n) { return function () { show(n); }; })(i));
+      el.strip.appendChild(b);
+    }
+
+    lb.hidden = false;
+    document.body.classList.add("lock");
+    show(c.s || 1);
+    if (history.replaceState) history.replaceState(null, "", "#" + slug);
+    el.close.focus();
+  }
+
+  function close() {
+    lb.hidden = true;
+    document.body.classList.toggle("lock", navOpen());
+    el.img.src = "";
+    el.strip.innerHTML = "";
+    cur = null;
+    if (history.replaceState) {
+      history.replaceState(null, "", location.pathname + location.search);
+    }
+    if (opener) { opener.focus(); opener = null; }
+  }
+
+  el.close.addEventListener("click", close);
+  el.prev.addEventListener("click", function () { show(idx - 1); });
+  el.next.addEventListener("click", function () { show(idx + 1); });
+
+  document.querySelectorAll(".tile[data-slug]").forEach(function (t) {
+    t.addEventListener("click", function () { open(t.dataset.slug, t); });
+  });
+
+  /* keyboard: Escape closes (drawer first if open), arrows page, Tab is trapped */
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      if (navOpen()) { setNav(false); return; }
+      if (isLbOpen()) close();
+      return;
+    }
+    if (!isLbOpen()) return;
+    if (e.key === "ArrowRight") show(idx + 1);
+    else if (e.key === "ArrowLeft") show(idx - 1);
+    else if (e.key === "Tab") {
+      var focusables = lb.querySelectorAll("button");
+      var first = focusables[0], last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) { last.focus(); e.preventDefault(); }
+      else if (!e.shiftKey && document.activeElement === last) { first.focus(); e.preventDefault(); }
+    }
+  });
+
+  /* swipe */
+  var tx = null, ty = null;
+  lb.addEventListener("touchstart", function (e) {
+    if (e.touches.length !== 1) { tx = null; return; }
+    tx = e.touches[0].clientX; ty = e.touches[0].clientY;
+  }, { passive: true });
+  lb.addEventListener("touchend", function (e) {
+    if (tx === null) return;
+    var dx = e.changedTouches[0].clientX - tx;
+    var dy = e.changedTouches[0].clientY - ty;
+    tx = null;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) show(idx + (dx < 0 ? 1 : -1));
+  }, { passive: true });
+
+  /* deep link: ponudba.html#masnibel opens that gallery */
+  var hash = location.hash.replace("#", "");
+  if (hash && CATALOG[hash]) {
+    var tile = document.querySelector('.tile[data-slug="' + hash + '"]');
+    open(hash, tile);
+  }
+})();

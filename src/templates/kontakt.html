@@ -1,0 +1,33 @@
+  <div class="page">
+    <span class="kicker">Kontakt</span>
+    <h1 class="page-title">{{OWNER}}</h1>
+
+    <div class="contact-grid">
+      <div>
+        <section class="block">
+          <h2 class="block-title">Naslov</h2>
+          <p class="contact-addr">{{NAME}}<br>{{STREET}}<br>{{LOCALITY}}<br>{{POSTAL}}, {{COUNTRY}}</p>
+        </section>
+        <section class="block">
+          <h2 class="block-title">Pišite ali pokličite</h2>
+          <div class="contact-lines">
+            <a href="tel:{{PHONE_TEL}}"><span class="contact-k">Telefon</span> {{PHONE_LABEL}}</a>
+            <a href="tel:{{MOBILE_TEL}}"><span class="contact-k">GSM</span> {{MOBILE_LABEL}}</a>
+            <a href="mailto:{{EMAIL}}">{{EMAIL}}</a>
+          </div>
+        </section>
+      </div>
+
+      <div>
+        <section class="block">
+          <h2 class="block-title">Kje smo</h2>
+          <div class="map-card">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            <p class="map-addr">{{STREET}}, {{LOCALITY}}<br>{{POSTAL}}</p>
+            <a class="btn btn-primary" href="https://www.openstreetmap.org/?mlat={{LAT}}&amp;mlon={{LON}}#map=15/{{LAT}}/{{LON}}" target="_blank" rel="noopener">Odpri zemljevid</a>
+          </div>
+        </section>
+      </div>
+    </div>
+{{REVIEWS}}
+  </div>

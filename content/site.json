@@ -1,0 +1,100 @@
+{
+  "_note": "Authored content — copy, display names, grouping. Counts and photo paths live in catalog.json (generated; never hand-edit). Locales: sl is live; add de/en keys beside sl when reviewed translations exist.",
+  "siteUrl": "https://siviljstvo-mitra.si",
+  "business": {
+    "name": "Šiviljstvo Mitra",
+    "owner": "Betka Golob s. p.",
+    "street": "Kamniška cesta 43",
+    "locality": "Preserje pri Radomljah",
+    "postal": "1235 Radomlje",
+    "country": "Slovenija",
+    "phone": { "label": "01 72 27 804", "tel": "+38617227804" },
+    "mobile": { "label": "041 941 611", "tel": "+38641941611" },
+    "email": "siviljstvo.mitra@siol.net",
+    "coords": { "lat": 46.17007, "lon": 14.593872 },
+    "facebook": "https://www.facebook.com/people/%C5%A0iviljstvo-Mitra/100009433814975",
+    "twitter": "https://twitter.com/SiviljstvoMitra"
+  },
+  "googlePlaceId": null,
+  "searchConsoleToken": null,
+  "hero": {
+    "images": ["09", "05", "08"],
+    "kicker": "Betka Golob s. p.",
+    "title": "Izdelava cerkvenih paramentov in narodnih vezenin",
+    "lead": "Ročno delo iz Preserij pri Radomljah. Mašni plašči, štole, albe, oltarni prti, bandera in prapori — šivano, vezeno in obnovljeno po naročilu.",
+    "alts": {
+      "09": "Bandera z napisom Sveta vera, bodi vam luč in črn plašč z malteškim križem",
+      "05": "Rdeč komplet z vezeninami in rišelje prt",
+      "08": "Bela in vijolična štola z vezenima simboloma"
+    }
+  },
+  "pillars": [
+    {
+      "title": "Paramenti",
+      "text": "Mašni plašči, pluviali, dalmatike, albe in štole v vseh liturgičnih barvah. Vsak kos je narejen po meri, s krojem in vezenino, dogovorjeno za posamezno župnijo."
+    },
+    {
+      "title": "Prti in vezenine",
+      "text": "Oltarni prti, krstni prtički in rišelje vezenine, poleg tega pa narodne vezenine za obredna in praznična oblačila zunaj cerkvenega leta."
+    },
+    {
+      "title": "Obnova",
+      "text": "Popravila in obnove starejših paramentov, baldahinov in tabernakljev — od podložitve in obrob do prenosa ohranjene vezenine na novo tkanino."
+    }
+  ],
+  "highlights": ["masnibel", "stolevijola", "prtoltarni", "bandera", "mitre", "risvez"],
+  "names": {
+    "albe": "Albe – roket (koretelj)",
+    "baldahini": "Baldahini",
+    "bandera": "Bandera",
+    "dalmatika": "Dalmatika",
+    "duhovniske": "Duhovniške srajce",
+    "masnibel": "Beli mašni plašči",
+    "masnirdec": "Rdeči mašni plašči",
+    "masniunikat": "Unikatni mašni plašči",
+    "masnivijola": "Vijolični mašni plašči",
+    "masnizelen": "Zeleni mašni plašči",
+    "mitre": "Mitre",
+    "pluviali": "Pluviali",
+    "prapori": "Prapori",
+    "prtkrstni": "Krstni prtički",
+    "prtnarodni": "Narodne vezenine",
+    "prtoltarni": "Oltarni prti",
+    "razno": "Razno",
+    "risvez": "Rišelje vezenine",
+    "stolebel": "Bele štole",
+    "stolecrne": "Črne štole",
+    "stolediakon": "Diakonske štole",
+    "stolerdec": "Rdeče štole",
+    "stoleunikat": "Unikatne štole",
+    "stolevijola": "Vijolične štole",
+    "stolezelen": "Zelene štole",
+    "taber": "Obnova tabernaklja",
+    "velum": "Velumi"
+  },
+  "groups": [
+    { "title": "Mašna oblačila", "slugs": ["albe", "dalmatika", "duhovniske", "masnibel", "masnirdec", "masnivijola", "masnizelen", "masniunikat", "pluviali"] },
+    { "title": "Štole", "slugs": ["stolebel", "stolerdec", "stolevijola", "stolezelen", "stolecrne", "stolediakon", "stoleunikat"] },
+    { "title": "Prti in vezenine", "slugs": ["prtoltarni", "prtkrstni", "prtnarodni", "risvez"] },
+    { "title": "Procesija in cerkveni prostor", "slugs": ["baldahini", "bandera", "prapori", "mitre", "velum", "taber", "razno"] }
+  ],
+  "pages": {
+    "home": {
+      "title": "Šiviljstvo Mitra — izdelava cerkvenih paramentov in narodnih vezenin",
+      "description": "Izdelava cerkvenih paramentov in narodnih vezenin. Mašni plašči, štole, albe, oltarni prti, bandera in prapori po naročilu. Betka Golob s. p., Preserje pri Radomljah."
+    },
+    "ponudba": {
+      "title": "Ponudba — Šiviljstvo Mitra",
+      "description": "Katalog izdelanih del: mašni plašči in štole v vseh liturgičnih barvah, albe, oltarni prti, krstni prtički, narodne in rišelje vezenine, bandera, prapori in obnove."
+    },
+    "kontakt": {
+      "title": "Kontakt — Šiviljstvo Mitra",
+      "description": "Šiviljstvo Mitra, Betka Golob s. p., Kamniška cesta 43, Preserje pri Radomljah, 1235 Radomlje. Telefon 01 72 27 804, GSM 041 941 611."
+    }
+  },
+  "lightboxHint": "Ob povpraševanju navedite oznako fotografije (npr. {ref}) — tako bomo takoj vedeli, kateri izdelek imate v mislih.",
+  "footer": {
+    "copyright": "Šiviljstvo Mitra © 2013 – {year}   Vse pravice pridržane.",
+    "credit": "Izdelava spletne strani: Mihael Golob"
+  }
+}

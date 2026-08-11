@@ -1,0 +1,21 @@
+{
+  "name": "siviljstvo-mitra",
+  "version": "1.0.0",
+  "description": "\u0160iviljstvo Mitra \u2014 static site build",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MihaelGolob/siviljstvo-mitra-website.git"
+  },
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/MihaelGolob/siviljstvo-mitra-website/issues"
+  },
+  "homepage": "https://github.com/MihaelGolob/siviljstvo-mitra-website#readme",
+  "dependencies": {
+    "sharp": "^0.35.3"
+  },
+  "private": true
+}

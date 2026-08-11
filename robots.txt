@@ -1,2 +1,8 @@
 User-agent: *
-Crawl-Delay: 10
+Allow: /
+Disallow: /archive/
+Disallow: /legacy/
+Disallow: /src/
+Disallow: /node_modules/
+
+Sitemap: https://siviljstvo-mitra.si/sitemap.xml

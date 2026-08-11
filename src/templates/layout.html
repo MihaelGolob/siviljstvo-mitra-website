@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}}</title>
+<meta name="description" content="{{DESCRIPTION}}">
+<link rel="canonical" href="{{CANONICAL}}">
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{TITLE}}">
+<meta property="og:description" content="{{DESCRIPTION}}">
+<meta property="og:url" content="{{CANONICAL}}">
+<meta property="og:image" content="{{OG_IMAGE}}">
+<meta property="og:locale" content="sl_SI">
+{{HEAD_EXTRA}}<link rel="icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Lora&display=swap">
+<link rel="stylesheet" href="assets/css/site.css">
+<script type="application/ld+json">{{JSONLD}}</script>
+</head>
+<body>
+
+<header class="bar">
+  <button class="bar-menu" id="nav-toggle" aria-label="Meni" aria-expanded="false" aria-controls="side">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
+  </button>
+  <span class="bar-brand">Šiviljstvo Mitra</span>
+</header>
+
+<div class="scrim" id="scrim"></div>
+
+<aside class="side" id="side">
+  <div class="side-brand">
+    <img src="assets/images/derived/brand/siviljstvo-300.png" alt="Šiviljstvo" width="150" height="70">
+    <img src="assets/images/derived/brand/mitra-240.png" alt="Mitra" width="120" height="48">
+  </div>
+  <div class="side-rule"></div>
+  <div class="side-mark">
+    <img src="assets/images/derived/brand/logo-176.png" alt="" width="88" height="41">
+  </div>
+  <nav class="side-nav" aria-label="Glavni meni">
+    <a href="index.html"{{CUR_HOME}}>Domov</a>
+    <a href="ponudba.html"{{CUR_PONUDBA}}>Ponudba</a>
+    <a href="kontakt.html"{{CUR_KONTAKT}}>Kontakt</a>
+  </nav>
+  <div class="side-contact">
+    <span class="side-place">Preserje pri Radomljah</span>
+    <a href="tel:{{MOBILE_TEL}}">{{MOBILE_LABEL}}</a>
+    <a href="mailto:{{EMAIL}}">{{EMAIL}}</a>
+  </div>
+</aside>
+
+<main class="main" id="main">
+{{CONTENT}}
+  <footer class="foot">
+    <div class="foot-lines">
+      <p>{{COPYRIGHT}}</p>
+      <p class="foot-credit">{{CREDIT}}</p>
+    </div>
+    <div class="foot-social">
+      <a href="{{FACEBOOK}}" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      </a>
+      <a href="{{TWITTER}}" target="_blank" rel="noopener" aria-label="Twitter">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 12 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
+      </a>
+    </div>
+  </footer>
+</main>
+
+{{OVERLAYS}}
+<script src="assets/js/site.js" defer></script>
+</body>
+</html>
