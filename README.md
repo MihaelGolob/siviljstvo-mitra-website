@@ -15,10 +15,24 @@ Generated pages and derivatives are committed, so a fresh clone is deployable wi
 The build is incremental (derivatives regenerate only when their source photo changes) and fails
 loudly on missing assets, unresolved template tokens, or leaked placeholder copy.
 
+## Languages
+
+The site builds in three locales: Slovenian at the root (`/`), German under `/de/`, English under
+`/en/` — nine pages total, cross-linked with `hreflang` and a sidebar switcher.
+
+- **All copy lives in `content/i18n/<locale>.json`** — UI strings, hero, pillars, category display
+  names, group titles, page titles/descriptions. Same shape in every file; edit and rebuild.
+- `content/site.json` holds only language-independent config: contact data, maps embed, Place ID,
+  hero image list, highlights, category grouping, and the `locales` list (first entry = root locale).
+- Plural forms live under `plurals` in each i18n file — Slovenian uses its 4-form declension
+  (1 / 2 / 3–4 / 5+), German and English a singular/plural pair.
+- The German and English copy was written fresh during the rebuild (the 2013 machine-translated
+  German was discarded); a native-speaker review before launch is still recommended.
+
 To change **photos**: add/remove files under `assets/images/gallery/<slug>/`, renumber to keep
-`001.jpg…NNN.jpg` contiguous, regenerate `content/catalog.json` counts, rebuild. To change **copy,
-names, groups, contact or the hero rotation**: edit `content/site.json`, rebuild. Set
-`googlePlaceId` in `site.json` to enable the Google-review card on the contact page.
+`001.jpg…NNN.jpg` contiguous, regenerate `content/catalog.json` counts, rebuild. To change **copy or
+names**: edit the `content/i18n/` files. To change **contact, grouping or the hero rotation**:
+edit `content/site.json`, rebuild.
 
 ## Layout
 

@@ -1,18 +1,18 @@
   <div class="page">
-    <span class="kicker">Kontakt</span>
+    <span class="kicker">{{NAV_KONTAKT}}</span>
     <h1 class="page-title">{{OWNER}}</h1>
 
     <div class="contact-grid">
       <div>
         <section class="block">
-          <h2 class="block-title">Naslov</h2>
+          <h2 class="block-title">{{ADDRESS_TITLE}}</h2>
           <p class="contact-addr">{{NAME}}<br>{{STREET}}<br>{{LOCALITY}}<br>{{POSTAL}}, {{COUNTRY}}</p>
         </section>
         <section class="block">
-          <h2 class="block-title">Pišite ali pokličite</h2>
+          <h2 class="block-title">{{REACH_US_TITLE}}</h2>
           <div class="contact-lines">
-            <a href="tel:{{PHONE_TEL}}"><span class="contact-k">Telefon</span> {{PHONE_LABEL}}</a>
-            <a href="tel:{{MOBILE_TEL}}"><span class="contact-k">GSM</span> {{MOBILE_LABEL}}</a>
+            <a href="tel:{{PHONE_TEL}}"><span class="contact-k">{{PHONE_LABEL_UI}}</span> {{PHONE_LABEL}}</a>
+            <a href="tel:{{MOBILE_TEL}}"><span class="contact-k">{{MOBILE_LABEL_UI}}</span> {{MOBILE_LABEL}}</a>
             <a href="mailto:{{EMAIL}}">{{EMAIL}}</a>
           </div>
         </section>
@@ -20,11 +20,11 @@
 
       <div>
         <section class="block">
-          <h2 class="block-title">Kje smo</h2>
+          <h2 class="block-title">{{WHERE_TITLE}}</h2>
           <div class="map-card">
-            <iframe src="{{MAPS_EMBED}}" title="Zemljevid — Šiviljstvo Mitra, {{STREET}}, {{LOCALITY}}" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <iframe src="{{MAPS_EMBED}}" title="{{MAP_IFRAME_TITLE}}" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
           </div>
-          <p class="map-fallback">{{STREET}}, {{LOCALITY}} — <a href="{{MAPS_LINK}}" target="_blank" rel="noopener">Odpri v Google Zemljevidih</a></p>
+          <p class="map-fallback">{{STREET}}, {{LOCALITY}} — <a href="{{MAPS_LINK}}" target="_blank" rel="noopener">{{MAP_OPEN}}</a></p>
         </section>
       </div>
     </div>

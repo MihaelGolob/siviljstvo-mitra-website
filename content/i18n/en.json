@@ -1,0 +1,122 @@
+{
+  "htmlLang": "en",
+  "ogLocale": "en_GB",
+  "ui": {
+    "menuAria": "Menu",
+    "mainNavAria": "Main menu",
+    "langAria": "Language",
+    "navHome": "Home",
+    "navCatalogue": "Catalogue",
+    "navContact": "Contact",
+    "browseCatalogue": "Browse the catalogue",
+    "contact": "Contact",
+    "fromCatalogue": "From the catalogue",
+    "allGroups": "All {n} groups →",
+    "catKicker": "Catalogue",
+    "catTitle": "Our work",
+    "catLead": "{groups} groups, {photos} photos of finished work. Click a group to open its gallery.",
+    "addressTitle": "Address",
+    "reachUsTitle": "Write or call us",
+    "phoneLabel": "Phone",
+    "mobileLabel": "Mobile",
+    "whereTitle": "Where we are",
+    "mapIframeTitle": "Map — Šiviljstvo Mitra",
+    "mapOpen": "Open in Google Maps",
+    "reviewsTitle": "Customer reviews",
+    "reviewsInvite": "If you have ordered a vestment or embroidery from us, your review helps us greatly — and helps other parishes decide.",
+    "reviewsButton": "Rate us",
+    "lbKicker": "Gallery",
+    "lbAria": "Gallery",
+    "lbClose": "Close gallery",
+    "lbPrev": "Previous photo",
+    "lbNext": "Next photo",
+    "lbHint": "When enquiring, please quote the photo reference (e.g. {ref}) — it tells us immediately which piece you have in mind.",
+    "photoAlt": "{name} – photo {n}",
+    "copyright": "Šiviljstvo Mitra © 2013 – {year}   All rights reserved.",
+    "credit": "Website by Mihael Golob",
+    "country": "Slovenia"
+  },
+  "plurals": {
+    "photos": [
+      "photo",
+      "photos"
+    ],
+    "groups": [
+      "group",
+      "groups"
+    ]
+  },
+  "hero": {
+    "kicker": "Betka Golob s. p.",
+    "title": "Handmade church vestments and folk embroidery",
+    "lead": "Handcrafted in Preserje pri Radomljah, Slovenia. Chasubles, stoles, albs, altar cloths and banners — sewn, embroidered and restored to order.",
+    "alts": {
+      "09": "Church banner with an inscription and a black robe with a Maltese cross",
+      "05": "Red embroidered set with a Richelieu cloth",
+      "08": "White and purple lectern falls with embroidered symbols"
+    }
+  },
+  "pillars": [
+    {
+      "title": "Vestments",
+      "text": "Chasubles, copes, dalmatics, albs and stoles in every liturgical colour. Each piece is made to measure, with the cut and embroidery agreed with the parish."
+    },
+    {
+      "title": "Cloths and embroidery",
+      "text": "Altar cloths, baptismal cloths and Richelieu embroidery, alongside Slovenian folk embroidery for ceremonial and festive wear beyond the church year."
+    },
+    {
+      "title": "Restoration",
+      "text": "Repair and restoration of older vestments, canopies and tabernacles — from relining and edging to transferring preserved embroidery onto new fabric."
+    }
+  ],
+  "groupTitles": [
+    "Mass vestments",
+    "Stoles",
+    "Cloths and embroidery",
+    "Procession and church interior"
+  ],
+  "names": {
+    "albe": "Albs – rochet (surplice)",
+    "baldahini": "Processional canopies",
+    "bandera": "Church banners",
+    "dalmatika": "Dalmatics",
+    "duhovniske": "Clergy shirts",
+    "masnibel": "White chasubles",
+    "masnirdec": "Red chasubles",
+    "masniunikat": "One-of-a-kind chasubles",
+    "masnivijola": "Purple chasubles",
+    "masnizelen": "Green chasubles",
+    "mitre": "Mitres",
+    "pluviali": "Copes",
+    "prapori": "Ceremonial banners",
+    "prtkrstni": "Baptismal cloths",
+    "prtnarodni": "Folk embroidery",
+    "prtoltarni": "Altar cloths",
+    "razno": "Miscellaneous",
+    "risvez": "Richelieu embroidery",
+    "stolebel": "White stoles",
+    "stolecrne": "Black stoles",
+    "stolediakon": "Deacon stoles",
+    "stolerdec": "Red stoles",
+    "stoleunikat": "One-of-a-kind stoles",
+    "stolevijola": "Purple stoles",
+    "stolezelen": "Green stoles",
+    "taber": "Tabernacle restoration",
+    "velum": "Humeral veils"
+  },
+  "pages": {
+    "home": {
+      "title": "Šiviljstvo Mitra — handmade church vestments and folk embroidery",
+      "description": "Handmade church vestments and Slovenian folk embroidery. Chasubles, stoles, albs, altar cloths and banners made to order. Betka Golob s. p., Preserje pri Radomljah, Slovenia."
+    },
+    "ponudba": {
+      "title": "Catalogue — Šiviljstvo Mitra",
+      "description": "Catalogue of finished work: chasubles and stoles in every liturgical colour, albs, altar cloths, baptismal cloths, folk and Richelieu embroidery, banners and restorations."
+    },
+    "kontakt": {
+      "title": "Contact — Šiviljstvo Mitra",
+      "description": "Šiviljstvo Mitra, Betka Golob s. p., Kamniška cesta 43, Preserje pri Radomljah, 1235 Radomlje, Slovenia. Phone +386 1 722 78 04, mobile +386 41 941 611."
+    }
+  }
+}

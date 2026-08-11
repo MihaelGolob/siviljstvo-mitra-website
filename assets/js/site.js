@@ -64,18 +64,23 @@
   var cur = null;   // { slug, name, count }
   var idx = 1;      // 1-based photo number
   var opener = null;
+  var BASE = window.ASSET_BASE || "";
+  var STR = window.LB_STRINGS || { photoAlt: "{name} – {n}" };
 
   function isLbOpen() { return !lb.hidden; }
   function pad(n) { return String(n).padStart(3, "0"); }
   function url(slug, n, size) {
-    return "assets/images/derived/gallery/" + slug + "/" + pad(n) + "-" + size + ".webp";
+    return BASE + "assets/images/derived/gallery/" + slug + "/" + pad(n) + "-" + size + ".webp";
   }
   function refCode(slug, n) { return slug.toUpperCase() + "-" + pad(n); }
+  function photoAlt(name, n) {
+    return STR.photoAlt.replace("{name}", name).replace("{n}", pad(n));
+  }
 
   function show(n) {
     idx = ((n - 1 + cur.count) % cur.count) + 1;
     el.img.src = url(cur.slug, idx, 640);
-    el.img.alt = cur.name + " – fotografija " + pad(idx);
+    el.img.alt = photoAlt(cur.name, idx);
     el.ref.textContent = refCode(cur.slug, idx);
     el.counter.textContent = idx + " / " + cur.count;
     var ths = el.strip.children;
@@ -103,7 +108,7 @@
       var b = document.createElement("button");
       b.className = "lb-th";
       b.type = "button";
-      b.setAttribute("aria-label", c.n + " – fotografija " + pad(i));
+      b.setAttribute("aria-label", photoAlt(c.n, i));
       var box = document.createElement("span");
       var im = document.createElement("img");
       im.loading = "lazy";

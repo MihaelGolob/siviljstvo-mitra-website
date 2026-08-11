@@ -1,28 +1,28 @@
 <!DOCTYPE html>
-<html lang="sl">
+<html lang="{{LANG}}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{TITLE}}</title>
 <meta name="description" content="{{DESCRIPTION}}">
 <link rel="canonical" href="{{CANONICAL}}">
-<meta property="og:type" content="website">
+{{HREFLANGS}}<meta property="og:type" content="website">
 <meta property="og:title" content="{{TITLE}}">
 <meta property="og:description" content="{{DESCRIPTION}}">
 <meta property="og:url" content="{{CANONICAL}}">
 <meta property="og:image" content="{{OG_IMAGE}}">
-<meta property="og:locale" content="sl_SI">
-{{HEAD_EXTRA}}<link rel="icon" href="favicon.ico">
+<meta property="og:locale" content="{{OG_LOCALE}}">
+{{HEAD_EXTRA}}<link rel="icon" href="{{P}}favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Lora&display=swap">
-<link rel="stylesheet" href="assets/css/site.css">
+<link rel="stylesheet" href="{{P}}assets/css/site.css">
 <script type="application/ld+json">{{JSONLD}}</script>
 </head>
 <body>
 
 <header class="bar">
-  <button class="bar-menu" id="nav-toggle" aria-label="Meni" aria-expanded="false" aria-controls="side">
+  <button class="bar-menu" id="nav-toggle" aria-label="{{MENU_ARIA}}" aria-expanded="false" aria-controls="side">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
   </button>
   <span class="bar-brand">Šiviljstvo Mitra</span>
@@ -32,15 +32,18 @@
 
 <aside class="side" id="side">
   <div class="side-gradient">
-    <img src="assets/images/derived/brand/siviljstvo-400.png" alt="Šiviljstvo" width="200" height="94">
-    <img src="assets/images/derived/brand/mitra-400.png" alt="Mitra" width="200" height="80">
-    <img src="assets/images/derived/brand/logo-400.png" alt="" width="200" height="94">
-    <img src="assets/images/derived/brand/betka-400.png" alt="Betka Golob s. p." width="200" height="55">
+    <img src="{{P}}assets/images/derived/brand/siviljstvo-400.png" alt="Šiviljstvo" width="200" height="94">
+    <img src="{{P}}assets/images/derived/brand/mitra-400.png" alt="Mitra" width="200" height="80">
+    <img src="{{P}}assets/images/derived/brand/logo-400.png" alt="" width="200" height="94">
+    <img src="{{P}}assets/images/derived/brand/betka-400.png" alt="Betka Golob s. p." width="200" height="55">
   </div>
-  <nav class="side-nav" aria-label="Glavni meni">
-    <a href="index.html"{{CUR_HOME}}>Domov</a>
-    <a href="ponudba.html"{{CUR_PONUDBA}}>Ponudba</a>
-    <a href="kontakt.html"{{CUR_KONTAKT}}>Kontakt</a>
+  <nav class="side-nav" aria-label="{{MAIN_NAV_ARIA}}">
+    <a href="index.html"{{CUR_HOME}}>{{NAV_HOME}}</a>
+    <a href="ponudba.html"{{CUR_PONUDBA}}>{{NAV_PONUDBA}}</a>
+    <a href="kontakt.html"{{CUR_KONTAKT}}>{{NAV_KONTAKT}}</a>
+  </nav>
+  <nav class="side-lang" aria-label="{{LANG_ARIA}}">
+{{SWITCHER}}
   </nav>
   <div class="side-contact">
     <span class="side-place">Preserje pri Radomljah</span>
@@ -68,6 +71,6 @@
 </main>
 
 {{OVERLAYS}}
-<script src="assets/js/site.js" defer></script>
+<script src="{{P}}assets/js/site.js" defer></script>
 </body>
 </html>

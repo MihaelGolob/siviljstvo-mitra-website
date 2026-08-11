@@ -1,0 +1,122 @@
+{
+  "htmlLang": "de",
+  "ogLocale": "de_DE",
+  "ui": {
+    "menuAria": "Menü",
+    "mainNavAria": "Hauptmenü",
+    "langAria": "Sprache",
+    "navHome": "Startseite",
+    "navCatalogue": "Sortiment",
+    "navContact": "Kontakt",
+    "browseCatalogue": "Zum Sortiment",
+    "contact": "Kontakt",
+    "fromCatalogue": "Aus dem Sortiment",
+    "allGroups": "Alle {n} Gruppen →",
+    "catKicker": "Katalog",
+    "catTitle": "Unsere Arbeiten",
+    "catLead": "{groups} Gruppen, {photos} Fotos ausgeführter Arbeiten. Klicken Sie auf eine Gruppe, um die Galerie zu öffnen.",
+    "addressTitle": "Anschrift",
+    "reachUsTitle": "Schreiben Sie uns oder rufen Sie an",
+    "phoneLabel": "Telefon",
+    "mobileLabel": "Mobil",
+    "whereTitle": "Wo wir sind",
+    "mapIframeTitle": "Karte — Šiviljstvo Mitra",
+    "mapOpen": "In Google Maps öffnen",
+    "reviewsTitle": "Bewertungen unserer Kunden",
+    "reviewsInvite": "Wenn Sie bei uns ein Parament oder eine Stickerei bestellt haben, hilft uns Ihre Bewertung sehr — und anderen Pfarreien bei der Entscheidung.",
+    "reviewsButton": "Bewerten Sie uns",
+    "lbKicker": "Galerie",
+    "lbAria": "Galerie",
+    "lbClose": "Galerie schließen",
+    "lbPrev": "Vorheriges Foto",
+    "lbNext": "Nächstes Foto",
+    "lbHint": "Geben Sie bei Ihrer Anfrage bitte die Foto-Kennung an (z. B. {ref}) — so wissen wir sofort, welches Stück Sie meinen.",
+    "photoAlt": "{name} – Foto {n}",
+    "copyright": "Šiviljstvo Mitra © 2013 – {year}   Alle Rechte vorbehalten.",
+    "credit": "Erstellung der Website: Mihael Golob",
+    "country": "Slowenien"
+  },
+  "plurals": {
+    "photos": [
+      "Foto",
+      "Fotos"
+    ],
+    "groups": [
+      "Gruppe",
+      "Gruppen"
+    ]
+  },
+  "hero": {
+    "kicker": "Betka Golob s. p.",
+    "title": "Anfertigung von Kirchenparamenten und Volksstickereien",
+    "lead": "Handarbeit aus Preserje pri Radomljah, Slowenien. Kaseln, Stolen, Alben, Altartücher und Kirchenfahnen — auf Bestellung genäht, bestickt und restauriert.",
+    "alts": {
+      "09": "Kirchenfahne mit Aufschrift und schwarzer Mantel mit Malteserkreuz",
+      "05": "Rotes Set mit Stickereien und Richelieu-Tuch",
+      "08": "Weißer und violetter Ambobehang mit gestickten Symbolen"
+    }
+  },
+  "pillars": [
+    {
+      "title": "Paramente",
+      "text": "Kaseln, Pluviale, Dalmatiken, Alben und Stolen in allen liturgischen Farben. Jedes Stück wird nach Maß gefertigt; Schnitt und Stickerei werden mit der jeweiligen Pfarrei abgestimmt."
+    },
+    {
+      "title": "Tücher und Stickereien",
+      "text": "Altartücher, Tauftücher und Richelieu-Stickereien, daneben Volksstickereien für Trachten und festliche Anlässe außerhalb des Kirchenjahres."
+    },
+    {
+      "title": "Restaurierung",
+      "text": "Reparatur und Restaurierung älterer Paramente, Baldachine und Tabernakel — vom Unterfüttern und Einfassen bis zur Übertragung erhaltener Stickerei auf neuen Stoff."
+    }
+  ],
+  "groupTitles": [
+    "Messgewänder",
+    "Stolen",
+    "Tücher und Stickereien",
+    "Prozession und Kirchenraum"
+  ],
+  "names": {
+    "albe": "Alben – Rochett (Chorhemd)",
+    "baldahini": "Baldachine",
+    "bandera": "Kirchenfahnen",
+    "dalmatika": "Dalmatiken",
+    "duhovniske": "Priesterhemden",
+    "masnibel": "Weiße Kaseln",
+    "masnirdec": "Rote Kaseln",
+    "masniunikat": "Unikat-Kaseln",
+    "masnivijola": "Violette Kaseln",
+    "masnizelen": "Grüne Kaseln",
+    "mitre": "Mitren",
+    "pluviali": "Pluviale (Chormäntel)",
+    "prapori": "Vereinsfahnen",
+    "prtkrstni": "Tauftücher",
+    "prtnarodni": "Volksstickereien",
+    "prtoltarni": "Altartücher",
+    "razno": "Verschiedenes",
+    "risvez": "Richelieu-Stickereien",
+    "stolebel": "Weiße Stolen",
+    "stolecrne": "Schwarze Stolen",
+    "stolediakon": "Diakonstolen",
+    "stolerdec": "Rote Stolen",
+    "stoleunikat": "Unikat-Stolen",
+    "stolevijola": "Violette Stolen",
+    "stolezelen": "Grüne Stolen",
+    "taber": "Tabernakel-Restaurierung",
+    "velum": "Segensvelen"
+  },
+  "pages": {
+    "home": {
+      "title": "Šiviljstvo Mitra — Kirchenparamente und Volksstickereien nach Maß",
+      "description": "Anfertigung von Kirchenparamenten und Volksstickereien. Kaseln, Stolen, Alben, Altartücher und Kirchenfahnen auf Bestellung. Betka Golob s. p., Preserje pri Radomljah, Slowenien."
+    },
+    "ponudba": {
+      "title": "Sortiment — Šiviljstvo Mitra",
+      "description": "Katalog ausgeführter Arbeiten: Kaseln und Stolen in allen liturgischen Farben, Alben, Altartücher, Tauftücher, Volks- und Richelieu-Stickereien, Kirchen- und Vereinsfahnen, Restaurierungen."
+    },
+    "kontakt": {
+      "title": "Kontakt — Šiviljstvo Mitra",
+      "description": "Šiviljstvo Mitra, Betka Golob s. p., Kamniška cesta 43, Preserje pri Radomljah, 1235 Radomlje, Slowenien. Telefon +386 1 722 78 04, Mobil +386 41 941 611."
+    }
+  }
+}

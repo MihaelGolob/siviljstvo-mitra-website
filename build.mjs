@@ -2,13 +2,14 @@
 /**
  * Šiviljstvo Mitra — static site build.
  *
- * Reads   content/catalog.json  (generated — counts, cover paths; never hand-edited)
- *         content/site.json     (authored — copy, names, groups, contact)
- * Emits   index.html, ponudba.html, kontakt.html, sitemap.xml, robots.txt
+ * Reads   content/catalog.json   (generated — counts, cover paths; never hand-edited)
+ *         content/site.json      (authored — language-independent config)
+ *         content/i18n/<loc>.json (authored — all strings per locale)
+ * Emits   {,de/,en/}{index,ponudba,kontakt}.html, sitemap.xml, robots.txt
  *         assets/images/derived/**  (WebP/JPEG/PNG derivatives via sharp, incremental)
  *
  * The build fails loudly: unresolved template tokens, missing assets, or leaked
- * prototype text are errors, not warnings.
+ * prototype/2013 text are errors, not warnings.
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -16,31 +17,36 @@ import sharp from "sharp";
 
 const ROOT = path.dirname(new URL(import.meta.url).pathname);
 const read = (p) => fs.readFileSync(path.join(ROOT, p), "utf8");
-const write = (p, s) => fs.writeFileSync(path.join(ROOT, p), s);
 const exists = (p) => fs.existsSync(path.join(ROOT, p));
+function write(p, s) {
+  fs.mkdirSync(path.dirname(path.join(ROOT, p)), { recursive: true });
+  fs.writeFileSync(path.join(ROOT, p), s);
+}
 
 const catalog = JSON.parse(read("content/catalog.json"));
 const site = JSON.parse(read("content/site.json"));
 const biz = site.business;
+const LOCALES = site.locales; // first entry is the default and lives at the root
+const i18n = Object.fromEntries(LOCALES.map((l) => [l, JSON.parse(read(`content/i18n/${l}.json`))]));
 
-/* ── merged category model ─────────────────────────────────────────────── */
-const bySlug = {};
+/* ── category model (names are per-locale; counts/covers shared) ───────── */
+const cats = {};
 for (const c of catalog.categories) {
-  const name = site.names[c.slug];
-  if (!name) throw new Error(`site.json has no display name for "${c.slug}"`);
-  // open the gallery at the cover photo when the cover is one of the numbered photos
   const m = c.cover.match(new RegExp(`^gallery/${c.slug}/(\\d+)\\.`));
-  bySlug[c.slug] = { slug: c.slug, name, count: c.count, cover: c.cover, start: m ? parseInt(m[1], 10) : 1 };
+  cats[c.slug] = { slug: c.slug, count: c.count, cover: c.cover, start: m ? parseInt(m[1], 10) : 1 };
 }
-const groupedSlugs = site.groups.flatMap((g) => g.slugs);
 {
-  const missing = Object.keys(bySlug).filter((s) => !groupedSlugs.includes(s));
-  const unknown = groupedSlugs.filter((s) => !bySlug[s]);
+  const grouped = site.groups.flat();
+  const missing = Object.keys(cats).filter((s) => !grouped.includes(s));
+  const unknown = grouped.filter((s) => !cats[s]);
   if (missing.length || unknown.length)
     throw new Error(`groups out of sync — ungrouped: [${missing}], unknown: [${unknown}]`);
+  for (const l of LOCALES)
+    for (const s of grouped)
+      if (!i18n[l].names[s]) throw new Error(`i18n/${l}.json missing name for "${s}"`);
 }
 
-/* ── image derivatives (incremental) ───────────────────────────────────── */
+/* ── image derivatives (incremental, locale-independent) ───────────────── */
 const jobs = [];
 function job(src, out, fn) {
   const s = path.join(ROOT, src), o = path.join(ROOT, out);
@@ -49,7 +55,7 @@ function job(src, out, fn) {
   jobs.push(async () => fn(sharp(s)).toFile(o));
 }
 
-for (const c of Object.values(bySlug)) {
+for (const c of Object.values(cats)) {
   const src = `assets/images/${c.cover}`;
   for (const w of [320, 640]) {
     job(src, `assets/images/derived/covers/${c.slug}-${w}.webp`,
@@ -65,13 +71,13 @@ for (const c of Object.values(bySlug)) {
     job(g, `${base}-160.webp`, (i) => i.resize(160, 160, { fit: "cover" }).webp({ quality: 70 }));
   }
 }
-for (const id of site.hero.images) {
+for (const id of site.heroImages) {
   job(`assets/images/slider/${id}.png`, `assets/images/derived/hero/${id}-640.webp`,
     (i) => i.resize({ width: 640 }).webp({ quality: 82 }));
 }
 for (const b of ["siviljstvo", "mitra", "logo", "betka"]) {
   job(`assets/images/brand/${b}.png`, `assets/images/derived/brand/${b}-400.png`,
-    (i) => i.resize({ width: 400, withoutEnlargement: false }).png({ compressionLevel: 9 }));
+    (i) => i.resize({ width: 400 }).png({ compressionLevel: 9 }));
 }
 
 async function runJobs(pool = 8) {
@@ -83,19 +89,21 @@ async function runJobs(pool = 8) {
   return done;
 }
 
-/* ── HTML helpers ──────────────────────────────────────────────────────── */
+/* ── helpers ───────────────────────────────────────────────────────────── */
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+const fmt = (tpl, vars) => tpl.replace(/\{(\w+)\}/g, (_, k) => (k in vars ? String(vars[k]) : `{${k}}`));
 
-/* Slovenian declension: [1, 2, 3–4, 5+] e.g. sl(2,"fotografija","fotografiji","fotografije","fotografij") */
-function sl(n, ena, dve, tri, pet) {
-  const m = n % 100;
-  return `${n} ${m === 1 ? ena : m === 2 ? dve : m === 3 || m === 4 ? tri : pet}`;
+/* Slovenian has a 4-form declension (1 / 2 / 3–4 / 5+); de and en use 2 forms. */
+function countLabel(forms, n) {
+  if (forms.length === 4) {
+    const m = n % 100;
+    return `${n} ${m === 1 ? forms[0] : m === 2 ? forms[1] : m === 3 || m === 4 ? forms[2] : forms[3]}`;
+  }
+  return `${n} ${n === 1 ? forms[0] : forms[1]}`;
 }
-const slFoto = (n) => sl(n, "fotografija", "fotografiji", "fotografije", "fotografij");
-const slSkupin = (n) => sl(n, "skupina", "skupini", "skupine", "skupin");
 
 function render(tpl, tokens) {
-  const out = tpl.replace(/\{\{([A-Z_]+)\}\}/g, (_, k) => {
+  const out = tpl.replace(/\{\{([A-Z_]+|P)\}\}/g, (_, k) => {
     if (!(k in tokens)) throw new Error(`unresolved template token {{${k}}}`);
     return tokens[k];
   });
@@ -104,61 +112,65 @@ function render(tpl, tokens) {
   return out;
 }
 
-function tilePicture(c, { lazy }) {
-  const d = `assets/images/derived/covers/${c.slug}`;
-  const attrs = lazy ? ' loading="lazy"' : "";
-  return `<span class="plate"><picture>
+const dirOf = (locale) => (locale === LOCALES[0] ? "" : `${locale}/`);
+const pageUrl = (locale, file) =>
+  `${site.siteUrl}/${dirOf(locale)}${file === "index.html" ? "" : file}`;
+
+/* ── page fragments, per locale ────────────────────────────────────────── */
+function fragments(locale) {
+  const t = i18n[locale];
+  const P = dirOf(locale) ? "../" : "";
+  const name = (slug) => t.names[slug];
+  const photosLabel = (n) => countLabel(t.plurals.photos, n);
+
+  const tilePicture = (slug) => {
+    const d = `${P}assets/images/derived/covers/${slug}`;
+    return `<span class="plate"><picture>
 <source type="image/webp" srcset="${d}-320.webp 320w, ${d}-640.webp 640w" sizes="(max-width:640px) 45vw, 200px">
-<img src="${d}-320.jpg" srcset="${d}-320.jpg 320w, ${d}-640.jpg 640w" sizes="(max-width:640px) 45vw, 200px" alt="${esc(c.name)} – Šiviljstvo Mitra" width="320" height="320"${attrs}>
+<img src="${d}-320.jpg" srcset="${d}-320.jpg 320w, ${d}-640.jpg 640w" sizes="(max-width:640px) 45vw, 200px" alt="${esc(name(slug))} – Šiviljstvo Mitra" width="320" height="320" loading="lazy">
 </picture></span>`;
-}
+  };
 
-function tileButton(c) {
-  return `<button type="button" class="tile" data-slug="${c.slug}" id="${c.slug}">
-${tilePicture(c, { lazy: true })}
-<span class="tile-name">${esc(c.name)}</span>
-<span class="tile-count">${slFoto(c.count)}</span>
+  const tileButton = (slug) => `<button type="button" class="tile" data-slug="${slug}" id="${slug}">
+${tilePicture(slug)}
+<span class="tile-name">${esc(name(slug))}</span>
+<span class="tile-count">${photosLabel(cats[slug].count)}</span>
 </button>`;
-}
 
-function tileLink(c) {
-  return `<a class="tile" href="ponudba.html#${c.slug}">
-${tilePicture(c, { lazy: true })}
-<span class="tile-name">${esc(c.name)}</span>
+  const tileLink = (slug) => `<a class="tile" href="ponudba.html#${slug}">
+${tilePicture(slug)}
+<span class="tile-name">${esc(name(slug))}</span>
 </a>`;
-}
 
-/* one <img> whose src the dots swap — no crossfade, nothing preloaded that
-   the visitor didn't ask for */
-const heroSrc = (id) => `assets/images/derived/hero/${id}-640.webp`;
-const first = site.hero.images[0];
-const heroDots = site.hero.images.length > 1
-  ? `      <div class="hero-dots">
-${site.hero.images.map((id, i) => `        <button type="button" class="hero-dot" data-src="${heroSrc(id)}" data-alt="${esc(site.hero.alts[id] || "")}" aria-label="Slika ${i + 1}: ${esc(site.hero.alts[id] || "")}"${i === 0 ? ' aria-current="true"' : ""}><span></span></button>`).join("\n")}
+  const heroSrc = (id) => `${P}assets/images/derived/hero/${id}-640.webp`;
+  const first = site.heroImages[0];
+  const heroDots = site.heroImages.length > 1
+    ? `      <div class="hero-dots">
+${site.heroImages.map((id, i) => `        <button type="button" class="hero-dot" data-src="${heroSrc(id)}" data-alt="${esc(t.hero.alts[id] || "")}" aria-label="${esc(t.hero.alts[id] || "")}"${i === 0 ? ' aria-current="true"' : ""}><span></span></button>`).join("\n")}
       </div>`
-  : "";
-const heroArt = `      <div class="hero-frame">
-        <img id="hero-img" src="${heroSrc(first)}" alt="${esc(site.hero.alts[first] || "")}" width="640" height="373" fetchpriority="high">
+    : "";
+  const heroArt = `      <div class="hero-frame">
+        <img id="hero-img" src="${heroSrc(first)}" alt="${esc(t.hero.alts[first] || "")}" width="640" height="373" fetchpriority="high">
       </div>
 ${heroDots}`;
 
-const pillars = site.pillars.map((p) =>
-  `    <div class="pillar"><h2>${esc(p.title)}</h2><p>${esc(p.text)}</p></div>`).join("\n");
+  const pillars = t.pillars.map((p) =>
+    `    <div class="pillar"><h2>${esc(p.title)}</h2><p>${esc(p.text)}</p></div>`).join("\n");
 
-const groupsHtml = site.groups.map((g) => `    <section class="group">
-      <div class="group-head"><h2>${esc(g.title)}</h2><span class="group-count">${slSkupin(g.slugs.length)}</span></div>
+  const groupsHtml = site.groups.map((slugs, gi) => `    <section class="group">
+      <div class="group-head"><h2>${esc(t.groupTitles[gi])}</h2><span class="group-count">${countLabel(t.plurals.groups, slugs.length)}</span></div>
       <div class="tiles">
-${g.slugs.map((s) => tileButton(bySlug[s])).join("\n")}
+${slugs.map(tileButton).join("\n")}
       </div>
     </section>`).join("\n\n");
 
-const lightbox = `<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Galerija">
+  const lightbox = `<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="${esc(t.ui.lbAria)}">
   <div class="lb-head">
-    <div class="lb-titles"><span class="lb-kicker">Galerija</span><span class="lb-title" id="lb-title"></span></div>
-    <button type="button" class="lb-close" id="lb-close" aria-label="Zapri galerijo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></button>
+    <div class="lb-titles"><span class="lb-kicker">${esc(t.ui.lbKicker)}</span><span class="lb-title" id="lb-title"></span></div>
+    <button type="button" class="lb-close" id="lb-close" aria-label="${esc(t.ui.lbClose)}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></button>
   </div>
   <div class="lb-stage">
-    <button type="button" class="lb-arrow" id="lb-prev" aria-label="Prejšnja fotografija"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 5 8 12 15 19"/></svg></button>
+    <button type="button" class="lb-arrow" id="lb-prev" aria-label="${esc(t.ui.lbPrev)}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 5 8 12 15 19"/></svg></button>
     <figure class="lb-fig">
       <img id="lb-img" alt="">
       <figcaption class="lb-cap">
@@ -166,7 +178,7 @@ const lightbox = `<div class="lb" id="lb" hidden role="dialog" aria-modal="true"
         <span class="lb-counter" id="lb-counter"></span>
       </figcaption>
     </figure>
-    <button type="button" class="lb-arrow" id="lb-next" aria-label="Naslednja fotografija"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 5 16 12 9 19"/></svg></button>
+    <button type="button" class="lb-arrow" id="lb-next" aria-label="${esc(t.ui.lbNext)}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 5 16 12 9 19"/></svg></button>
   </div>
   <div class="lb-foot">
     <p class="lb-hint" id="lb-hint"></p>
@@ -174,113 +186,170 @@ const lightbox = `<div class="lb" id="lb" hidden role="dialog" aria-modal="true"
   </div>
 </div>
 <script>
-window.CATALOG=${JSON.stringify(Object.fromEntries(Object.values(bySlug).map((c) => [c.slug, { n: c.name, c: c.count, s: c.start }])))};
-window.LB_HINT=${JSON.stringify(site.lightboxHint)};
+window.ASSET_BASE=${JSON.stringify(P)};
+window.CATALOG=${JSON.stringify(Object.fromEntries(Object.values(cats).map((c) => [c.slug, { n: name(c.slug), c: c.count, s: c.start }])))};
+window.LB_HINT=${JSON.stringify(t.ui.lbHint)};
+window.LB_STRINGS=${JSON.stringify({ photoAlt: t.ui.photoAlt })};
 </script>`;
 
-const reviewsHtml = site.googlePlaceId ? `
+  const reviews = site.googlePlaceId ? `
     <section class="reviews">
-      <div class="reviews-head"><h2>Mnenja naročnikov</h2><span class="kicker">Google</span></div>
+      <div class="reviews-head"><h2>${esc(t.ui.reviewsTitle)}</h2><span class="kicker">Google</span></div>
       <div class="rate-card">
-        <p>Če ste pri nas naročili parament ali vezenino, nam bo vaše mnenje v veliko pomoč — in drugim župnijam pri odločitvi.</p>
+        <p>${esc(t.ui.reviewsInvite)}</p>
         <a class="btn btn-primary" href="https://search.google.com/local/writereview?placeid=${esc(site.googlePlaceId)}" target="_blank" rel="noopener">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.6 5.6 6 .8-4.4 4.2 1.1 6L12 16.8 6.7 19.6l1.1-6L3.4 9.4l6-.8Z"/></svg>
-          Ocenite nas
+          ${esc(t.ui.reviewsButton)}
         </a>
       </div>
     </section>` : "";
 
-const jsonld = JSON.stringify({
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  name: biz.name,
-  description: site.pages.home.description,
-  url: site.siteUrl,
-  email: biz.email,
-  telephone: biz.phone.tel,
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: biz.street,
-    addressLocality: biz.locality,
-    postalCode: biz.postal.split(" ")[0],
-    addressCountry: "SI"
-  },
-  geo: { "@type": "GeoCoordinates", latitude: biz.coords.lat, longitude: biz.coords.lon },
-  sameAs: [biz.facebook, biz.twitter]
-});
+  return { t, P, tileLink, heroArt, pillars, groupsHtml, lightbox, reviews };
+}
 
-/* ── page assembly ─────────────────────────────────────────────────────── */
-const layout = read("src/templates/layout.html");
+/* ── layout tokens shared per (locale, page) ───────────────────────────── */
+const LANG_LABELS = { sl: "SLO", de: "DEU", en: "ENG" };
+
+function switcher(locale, file) {
+  return LOCALES.map((l) => {
+    if (l === locale)
+      return `    <span aria-current="true">${LANG_LABELS[l]}</span>`;
+    const back = dirOf(locale) ? "../" : "";
+    return `    <a href="${back}${dirOf(l)}${file}" lang="${i18n[l].htmlLang}">${LANG_LABELS[l]}</a>`;
+  }).join("\n");
+}
+
+function hreflangs(file) {
+  const lines = LOCALES.map((l) =>
+    `<link rel="alternate" hreflang="${i18n[l].htmlLang}" href="${pageUrl(l, file)}">`);
+  lines.push(`<link rel="alternate" hreflang="x-default" href="${pageUrl(LOCALES[0], file)}">`);
+  return lines.join("\n") + "\n";
+}
+
 const year = new Date().getFullYear();
+const layout = read("src/templates/layout.html");
 const ogImage = `${site.siteUrl}/assets/images/derived/covers/${site.highlights[0]}-640.jpg`;
 
-function page(file, { title, description, content, overlays = "", current }) {
+function page(locale, file, { pageKey, content, overlays = "", current }) {
+  const f = fragments(locale);
+  const t = f.t;
+  const jsonld = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: biz.name,
+    description: t.pages.home.description,
+    url: site.siteUrl,
+    email: biz.email,
+    telephone: biz.phone.tel,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: biz.street,
+      addressLocality: biz.locality,
+      postalCode: biz.postal.split(" ")[0],
+      addressCountry: "SI"
+    },
+    geo: { "@type": "GeoCoordinates", latitude: biz.coords.lat, longitude: biz.coords.lon },
+    sameAs: [biz.facebook, biz.twitter]
+  });
   const html = render(layout, {
-    TITLE: esc(title),
-    DESCRIPTION: esc(description),
-    CANONICAL: `${site.siteUrl}/${file === "index.html" ? "" : file}`,
+    LANG: t.htmlLang,
+    TITLE: esc(t.pages[pageKey].title),
+    DESCRIPTION: esc(t.pages[pageKey].description),
+    CANONICAL: pageUrl(locale, file),
+    HREFLANGS: hreflangs(file),
     OG_IMAGE: ogImage,
+    OG_LOCALE: t.ogLocale,
     HEAD_EXTRA: site.searchConsoleToken
       ? `<meta name="google-site-verification" content="${esc(site.searchConsoleToken)}">\n` : "",
     JSONLD: jsonld,
+    P: f.P,
+    MENU_ARIA: esc(t.ui.menuAria),
+    MAIN_NAV_ARIA: esc(t.ui.mainNavAria),
+    LANG_ARIA: esc(t.ui.langAria),
+    NAV_HOME: esc(t.ui.navHome),
+    NAV_PONUDBA: esc(t.ui.navCatalogue),
+    NAV_KONTAKT: esc(t.ui.navContact),
     CUR_HOME: current === "home" ? ' aria-current="page"' : "",
     CUR_PONUDBA: current === "ponudba" ? ' aria-current="page"' : "",
     CUR_KONTAKT: current === "kontakt" ? ' aria-current="page"' : "",
+    SWITCHER: switcher(locale, file),
     MOBILE_TEL: biz.mobile.tel, MOBILE_LABEL: biz.mobile.label, EMAIL: biz.email,
     CONTENT: content,
-    COPYRIGHT: esc(site.footer.copyright.replace("{year}", String(year))),
-    CREDIT: esc(site.footer.credit),
+    COPYRIGHT: esc(fmt(t.ui.copyright, { year })),
+    CREDIT: esc(t.ui.credit),
     FACEBOOK: biz.facebook, TWITTER: biz.twitter,
     OVERLAYS: overlays
   });
-  write(file, html);
+  write(`${dirOf(locale)}${file}`, html);
 }
 
-page("index.html", {
-  title: site.pages.home.title,
-  description: site.pages.home.description,
-  current: "home",
-  content: render(read("src/templates/home.html"), {
-    HERO_KICKER: esc(site.hero.kicker),
-    HERO_TITLE: esc(site.hero.title),
-    HERO_LEAD: esc(site.hero.lead),
-    HERO_ART: heroArt,
-    PILLARS: pillars,
-    CAT_COUNT: String(catalog.categories.length),
-    HIGHLIGHT_TILES: site.highlights.map((s) => tileLink(bySlug[s])).join("\n")
-  })
-});
+/* ── emit all locales ──────────────────────────────────────────────────── */
+const totalPhotos = catalog.categories.reduce((a, c) => a + c.count, 0);
 
-page("ponudba.html", {
-  title: site.pages.ponudba.title,
-  description: site.pages.ponudba.description,
-  current: "ponudba",
-  overlays: lightbox,
-  content: render(read("src/templates/ponudba.html"), {
-    GROUP_COUNT: String(catalog.categories.length),
-    PHOTO_TOTAL: String(catalog.categories.reduce((a, c) => a + c.count, 0)),
-    GROUPS: groupsHtml
-  })
-});
+for (const locale of LOCALES) {
+  const f = fragments(locale);
+  const t = f.t;
 
-page("kontakt.html", {
-  title: site.pages.kontakt.title,
-  description: site.pages.kontakt.description,
-  current: "kontakt",
-  content: render(read("src/templates/kontakt.html"), {
-    OWNER: esc(biz.owner), NAME: esc(biz.name),
-    STREET: esc(biz.street), LOCALITY: esc(biz.locality),
-    POSTAL: esc(biz.postal), COUNTRY: esc(biz.country),
-    PHONE_TEL: biz.phone.tel, PHONE_LABEL: biz.phone.label,
-    MOBILE_TEL: biz.mobile.tel, MOBILE_LABEL: biz.mobile.label, EMAIL: biz.email,
-    MAPS_EMBED: biz.mapsEmbed, MAPS_LINK: biz.mapsLink,
-    REVIEWS: reviewsHtml
-  })
-});
+  page(locale, "index.html", {
+    pageKey: "home",
+    current: "home",
+    content: render(read("src/templates/home.html"), {
+      HERO_KICKER: esc(t.hero.kicker),
+      HERO_TITLE: esc(t.hero.title),
+      HERO_LEAD: esc(t.hero.lead),
+      HERO_ART: f.heroArt,
+      BROWSE_LABEL: esc(t.ui.browseCatalogue),
+      CONTACT_LABEL: esc(t.ui.contact),
+      FROM_CATALOGUE: esc(t.ui.fromCatalogue),
+      ALL_GROUPS: esc(fmt(t.ui.allGroups, { n: catalog.categories.length })),
+      PILLARS: f.pillars,
+      HIGHLIGHT_TILES: site.highlights.map(f.tileLink).join("\n")
+    })
+  });
 
+  page(locale, "ponudba.html", {
+    pageKey: "ponudba",
+    current: "ponudba",
+    overlays: f.lightbox,
+    content: render(read("src/templates/ponudba.html"), {
+      CAT_KICKER: esc(t.ui.catKicker),
+      CAT_TITLE: esc(t.ui.catTitle),
+      CAT_LEAD: esc(fmt(t.ui.catLead, {
+        groups: catalog.categories.length,
+        photos: totalPhotos
+      })),
+      GROUPS: f.groupsHtml
+    })
+  });
+
+  page(locale, "kontakt.html", {
+    pageKey: "kontakt",
+    current: "kontakt",
+    content: render(read("src/templates/kontakt.html"), {
+      OWNER: esc(biz.owner), NAME: esc(biz.name),
+      STREET: esc(biz.street), LOCALITY: esc(biz.locality),
+      POSTAL: esc(biz.postal), COUNTRY: esc(t.ui.country),
+      ADDRESS_TITLE: esc(t.ui.addressTitle),
+      REACH_US_TITLE: esc(t.ui.reachUsTitle),
+      PHONE_LABEL_UI: esc(t.ui.phoneLabel),
+      MOBILE_LABEL_UI: esc(t.ui.mobileLabel),
+      PHONE_TEL: biz.phone.tel, PHONE_LABEL: biz.phone.label,
+      MOBILE_TEL: biz.mobile.tel, MOBILE_LABEL: biz.mobile.label, EMAIL: biz.email,
+      WHERE_TITLE: esc(t.ui.whereTitle),
+      MAP_IFRAME_TITLE: esc(t.ui.mapIframeTitle),
+      MAPS_EMBED: biz.mapsEmbed, MAPS_LINK: biz.mapsLink,
+      MAP_OPEN: esc(t.ui.mapOpen),
+      NAV_KONTAKT: esc(t.ui.navContact),
+      REVIEWS: f.reviews
+    })
+  });
+}
+
+/* ── sitemap + robots ──────────────────────────────────────────────────── */
+const FILES = ["index.html", "ponudba.html", "kontakt.html"];
 write("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${["", "ponudba.html", "kontakt.html"].map((p) => `  <url><loc>${site.siteUrl}/${p}</loc></url>`).join("\n")}
+${LOCALES.flatMap((l) => FILES.map((p) => `  <url><loc>${pageUrl(l, p)}</loc></url>`)).join("\n")}
 </urlset>
 `);
 
@@ -299,21 +368,28 @@ const generated = await runJobs();
 
 const errors = [];
 const LEAKS = ["prototip", "PLACE_ID", "javen od leta 2013", "Župnija Sv. Marjete",
-  "Anton K.", "Marija P.", "nadomestna besedila", "sc-if", "sc-for", "style-hover", "{{"];
+  "Anton K.", "Marija P.", "nadomestna besedila", "sc-if", "sc-for", "style-hover",
+  "Weiß kaseln", "folkstickerei", "aushangfahne", "segenvelen", "{{"];
 
-for (const file of ["index.html", "ponudba.html", "kontakt.html"]) {
-  const html = read(file);
-  for (const leak of LEAKS) if (html.includes(leak)) errors.push(`${file}: leaked "${leak}"`);
-  for (const m of html.matchAll(/(?:src|href|srcset)="([^"]+)"/g)) {
-    for (let ref of m[1].split(",")) {
-      ref = ref.trim().split(" ")[0];
-      if (/^(https?:|mailto:|tel:|#|data:)/.test(ref) || ref === "") continue;
-      if (!exists(ref.split("#")[0])) errors.push(`${file}: missing ${ref}`);
+for (const locale of LOCALES) {
+  for (const file of FILES) {
+    const rel = `${dirOf(locale)}${file}`;
+    const html = read(rel);
+    for (const leak of LEAKS) if (html.includes(leak)) errors.push(`${rel}: leaked "${leak}"`);
+    if (!html.includes(`<html lang="${i18n[locale].htmlLang}"`)) errors.push(`${rel}: wrong <html lang>`);
+    const hrefl = (html.match(/hreflang=/g) || []).length;
+    if (hrefl !== LOCALES.length + 1) errors.push(`${rel}: expected ${LOCALES.length + 1} hreflang links, found ${hrefl}`);
+    for (const m of html.matchAll(/(?:src|href|srcset)="([^"]+)"/g)) {
+      for (let ref of m[1].split(",")) {
+        ref = ref.trim().split(" ")[0];
+        if (/^(https?:|mailto:|tel:|#|data:)/.test(ref) || ref === "") continue;
+        const resolved = path.join(dirOf(locale), ref.split("#")[0]);
+        if (!exists(resolved)) errors.push(`${rel}: missing ${ref}`);
+      }
     }
   }
 }
-// every lightbox image the JS can request must exist, and counts must match catalog
-for (const c of Object.values(bySlug)) {
+for (const c of Object.values(cats)) {
   for (let n = 1; n <= c.count; n++) {
     const p = `assets/images/derived/gallery/${c.slug}/${String(n).padStart(3, "0")}`;
     if (!exists(`${p}-640.webp`)) errors.push(`missing derivative ${p}-640.webp`);
@@ -328,5 +404,5 @@ if (errors.length) {
   for (const e of errors.slice(0, 20)) console.error("  " + e);
   process.exit(1);
 }
-console.log(`ok: 3 pages, sitemap, robots; ${generated} derivative(s) generated (fresh ones skipped)`);
-console.log(`    categories: ${catalog.categories.length}, photos: ${catalog.categories.reduce((a, c) => a + c.count, 0)}`);
+console.log(`ok: ${LOCALES.length * FILES.length} pages (${LOCALES.join(", ")}), sitemap, robots; ${generated} derivative(s) generated`);
+console.log(`    categories: ${catalog.categories.length}, photos: ${totalPhotos}`);
