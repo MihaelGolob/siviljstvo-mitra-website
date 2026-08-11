@@ -26,11 +26,10 @@ machine-German.
 | `sources/{gallery,covers,slider,brand}/` | **no** | Build inputs and the **only surviving originals**: 738 gallery photos (`<slug>/001.jpg…`, contiguous), 3 standalone covers, the hero-montage pool, brand art. Never re-encode or overwrite. |
 | `content/` | **no** | `catalog.json` (generated manifest), `site.json` (config), `i18n/{sl,de,en}.json` (all copy), `notes-legacy.md` (salvage) |
 | `build.mjs`, `src/templates/` | **no** | Build script and language-neutral page templates |
-| `archive/`, `legacy/` | **no** | Unused originals (incl. high-res photos, retired montages, 2013 homepage features) and the old site — see their READMEs |
 
-The deploy rule is one line: **repo root minus `sources/`, `content/`, `src/`, `archive/`,
-`legacy/` and `node_modules/`** (robots.txt disallows the sensitive ones defensively). Everything
-visitors download is WebP, plus small JPEG fallbacks for the catalogue tiles.
+The deploy rule is one line: **repo root minus `sources/`, `content/`, `src/` and `node_modules/`**
+(robots.txt disallows them defensively). Everything visitors download is WebP, plus small JPEG
+fallbacks for the catalogue tiles.
 
 ## Languages
 
@@ -65,8 +64,21 @@ categories (dedupe on those pairs if a combined "all products" view is ever buil
 
 - **Product photos are small and cannot be improved**: 493 of 738 are under 400 px wide (median
   ≈ 275×640) and no better source exists anywhere. The design uses constrained tiles for a reason.
-  The only large-hero material is `archive/photos-highres/`.
 - The lightbox reference codes (`MASNIBEL-042`) map 1:1 to `sources/gallery/masnibel/042.jpg` —
   they're how customers identify pieces in enquiries; keep numbering stable.
-- Recover anything deleted during the 2026 cleanups with `git show <old-commit>:<path>`
-  (pre-cleanup tree: `70c9dff`).
+
+## Deleted material lives only in git history — never squash or prune it
+
+The `archive/` and `legacy/` folders were removed from the working tree in 2026. **`archive/`
+contained the only high-resolution photographs of this business's work in existence** (camera
+originals, the logo source art, retired hero montages, the 2013 homepage features). They are
+recoverable **only** from this repository's history:
+
+```
+git show b490b11:archive/README.md                        # inventory of what was there
+git show b490b11:archive/photos-highres/prt1.jpg > prt1.jpg
+git show b490b11:legacy/ponudba.html                      # the 2013 site, for reference
+git show 70c9dff:<path>                                   # anything from the pre-cleanup tree
+```
+
+Rewriting history (squash, filter, shallow-prune) would destroy these originals permanently.

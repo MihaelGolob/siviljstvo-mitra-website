@@ -363,8 +363,7 @@ ${LOCALES.flatMap((l) => FILES.map((p) => `  <url><loc>${pageUrl(l, p)}</loc></u
 
 write("robots.txt", `User-agent: *
 Allow: /
-Disallow: /archive/
-Disallow: /legacy/
+Disallow: /sources/
 Disallow: /src/
 Disallow: /node_modules/
 

@@ -1,10 +1,8 @@
 # Salvaged content from the 2013 site
 
-Everything here was extracted before the old files were deleted or moved to `legacy/` / `archive/`
-during the pre-overhaul cleanup. It exists so the new build doesn't have to re-derive copy, contact
-details, or SEO metadata from deleted markup.
-
-Recover any original file with `git show 70c9dff:<path>`.
+Everything here was extracted from the 2013 site before its files were removed. The old site and
+the photo archive now exist only in git history (see the README's recovery section): the 2013 pages
+via `git show b490b11:legacy/<file>`, anything from the original tree via `git show 70c9dff:<path>`.
 
 ---
 
