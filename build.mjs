@@ -113,7 +113,7 @@ for (const c of Object.values(cats)) {
 }
 for (const f of hero.images) {
   job(`sources/${f}`, `assets/images/hero/${heroStem(f)}-640.webp`,
-    (i) => i.resize({ width: 640 }).webp({ quality: 82 }));
+    (i) => i.resize(640, 640, { fit: "inside" }).webp({ quality: 82 }));
 }
 for (const b of ["siviljstvo", "mitra", "logo", "betka"]) {
   job(`sources/brand/${b}.png`, `assets/images/brand/${b}-400.webp`,
