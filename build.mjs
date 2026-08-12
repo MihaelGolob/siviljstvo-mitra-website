@@ -49,7 +49,16 @@ for (const f of fs.readdirSync(path.join(ROOT, "content/gallery")).filter((n) =>
   const start = files.indexOf(baseName(cover)) + 1; // 0 → cover is a dedicated file
   cats[slug] = { slug, files, count: files.length, cover, start: start || 1 };
 }
-const hero = { images: JSON.parse(read("content/hero.json")).images.map(baseName) };
+/* hero slides may be any image under sources/ (picked from Global Assets in
+   the CMS); bare basenames mean sources/slider/. Derivative stems flatten the
+   path so e.g. gallery/albe/001.jpg and slider/001.jpg can't collide. */
+const hero = {
+  images: JSON.parse(read("content/hero.json")).images.map((p) => {
+    p = String(p).replace(/^\/?sources\//, "").replace(/^\//, "");
+    return p.includes("/") ? p : `slider/${p}`;
+  })
+};
+const heroStem = (p) => stem(p).replace(/\//g, "-");
 {
   const grouped = site.groups.flat();
   const missing = Object.keys(cats).filter((s) => !grouped.includes(s));
@@ -70,7 +79,7 @@ const hero = { images: JSON.parse(read("content/hero.json")).images.map(baseName
       if (!exists(`sources/gallery/${c.slug}/${f}`)) missing.push(`${c.slug}: sources/gallery/${c.slug}/${f}`);
   }
   for (const f of hero.images)
-    if (!exists(`sources/slider/${f}`)) missing.push(`hero: sources/slider/${f}`);
+    if (!exists(`sources/${f}`)) missing.push(`hero: sources/${f}`);
   if (missing.length)
     throw new Error(`missing source image(s):\n  ${missing.join("\n  ")}`);
 }
@@ -103,7 +112,7 @@ for (const c of Object.values(cats)) {
   }
 }
 for (const f of hero.images) {
-  job(`sources/slider/${f}`, `assets/images/hero/${stem(f)}-640.webp`,
+  job(`sources/${f}`, `assets/images/hero/${heroStem(f)}-640.webp`,
     (i) => i.resize({ width: 640 }).webp({ quality: 82 }));
 }
 for (const b of ["siviljstvo", "mitra", "logo", "betka"]) {
@@ -177,7 +186,7 @@ ${tilePicture(slug)}
 </a>`;
 
   /* hero images are decorative (alt="") — dots get a numeric localized label */
-  const heroSrc = (f) => `${P}assets/images/hero/${stem(f)}-640.webp`;
+  const heroSrc = (f) => `${P}assets/images/hero/${heroStem(f)}-640.webp`;
   const heroDots = hero.images.length > 1
     ? `      <div class="hero-dots">
 ${hero.images.map((f, i) => `        <button type="button" class="hero-dot" data-src="${heroSrc(f)}" data-alt="" aria-label="${esc(fmt(t.hero.dotLabel, { n: i + 1 }))}"${i === 0 ? ' aria-current="true"' : ""}><span></span></button>`).join("\n")}
@@ -419,7 +428,7 @@ const pruned = [];
     if (!cats[d]) fs.rmSync(path.join(galleryRoot, d), { recursive: true, force: true });
   }
   pruned.push(...pruneDir(path.join(ROOT, "assets/images/hero"),
-    new Set(hero.images.map(stem)), "assets/images/hero"));
+    new Set(hero.images.map(heroStem)), "assets/images/hero"));
 }
 
 /* ── orphaned sources (uploaded but not listed) — warn, don't fail ─────── */
@@ -433,7 +442,7 @@ const warnings = [];
   }
   const listed = new Set(hero.images);
   for (const f of fs.readdirSync(path.join(ROOT, "sources/slider")).filter(img))
-    if (!listed.has(f)) warnings.push(`sources/slider/${f} is not listed in content/hero.json — not published`);
+    if (!listed.has(`slider/${f}`)) warnings.push(`sources/slider/${f} is not listed in content/hero.json — not published`);
 }
 
 /* ── verification ──────────────────────────────────────────────────────── */
@@ -470,8 +479,8 @@ for (const c of Object.values(cats)) {
   }
 }
 for (const f of hero.images)
-  if (!exists(`assets/images/hero/${stem(f)}-640.webp`))
-    errors.push(`missing derivative assets/images/hero/${stem(f)}-640.webp`);
+  if (!exists(`assets/images/hero/${heroStem(f)}-640.webp`))
+    errors.push(`missing derivative assets/images/hero/${heroStem(f)}-640.webp`);
 
 if (errors.length) {
   console.error(`BUILD FAILED — ${errors.length} problem(s):`);

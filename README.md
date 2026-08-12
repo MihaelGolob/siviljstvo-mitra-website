@@ -63,9 +63,10 @@ the flag switcher in the sidebar.
   (any name), add it at the right position in `content/gallery/<slug>.json` → `images`, rebuild.
   List order is display order; files on disk but not listed are warned about and never published.
 - **Copy or category names**: edit `content/i18n/*.json`, rebuild.
-- **Hero rotation**: reorder/add basenames from `sources/slider/` in `content/hero.json` (04–10 are
-  usable montages; the retired 01–03 had branding burned in and live in `archive/slider-retired/`
-  in git history), rebuild. Hero images are decorative (`alt=""`).
+- **Hero rotation**: reorder/add entries in `content/hero.json` — any image under `sources/` works
+  (in the CMS: pick from the *Global Assets* tab), bare basenames mean `sources/slider/`. 04–10
+  there are usable montages; the retired 01–03 had branding burned in and live in
+  `archive/slider-retired/` in git history. Hero images are decorative (`alt=""`).
 - **Reviews card**: lives on the contact page, gated on `googlePlaceId` in `site.json`.
 
 ## CMS (`/admin/`) — Sveltia
