@@ -31,5 +31,8 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
+          # hitrost blocks port 21 from foreign IPs; connections from
+          # abroad (incl. GitHub runners) must use 6021
+          port: 6021
           local-dir: dist/
           server-dir: domains/siviljstvo-mitra.si/public_html/
