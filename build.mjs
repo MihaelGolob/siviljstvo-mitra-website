@@ -59,10 +59,12 @@ function job(src, out, fn) {
 for (const c of Object.values(cats)) {
   const src = `sources/${c.cover}`;
   for (const w of [320, 640]) {
+    // tiles show the whole piece (object-fit:contain) — no square crop
+    const box = (i) => i.resize(w, Math.round((w * 4) / 3), { fit: "inside", withoutEnlargement: true });
     job(src, `assets/images/covers/${c.slug}-${w}.webp`,
-      (i) => i.resize(w, w, { fit: "cover" }).webp({ quality: 78 }));
+      (i) => box(i).webp({ quality: 78 }));
     job(src, `assets/images/covers/${c.slug}-${w}.jpg`,
-      (i) => i.resize(w, w, { fit: "cover" }).jpeg({ quality: 78, progressive: true }));
+      (i) => box(i).jpeg({ quality: 78, progressive: true }));
   }
   for (let n = 1; n <= c.count; n++) {
     const g = `sources/gallery/${c.slug}/${String(n).padStart(3, "0")}.jpg`;
@@ -131,7 +133,7 @@ function fragments(locale) {
     const d = `${P}assets/images/covers/${slug}`;
     return `<span class="plate"><picture>
 <source type="image/webp" srcset="${d}-320.webp 320w, ${d}-640.webp 640w" sizes="(max-width:360px) 88vw, (max-width:640px) 45vw, 200px">
-<img src="${d}-320.jpg" srcset="${d}-320.jpg 320w, ${d}-640.jpg 640w" sizes="(max-width:360px) 88vw, (max-width:640px) 45vw, 200px" alt="${esc(name(slug))} – Šiviljstvo Mitra" width="320" height="320" loading="lazy">
+<img src="${d}-320.jpg" srcset="${d}-320.jpg 320w, ${d}-640.jpg 640w" sizes="(max-width:360px) 88vw, (max-width:640px) 45vw, 200px" alt="${esc(name(slug))} – Šiviljstvo Mitra" width="320" height="427" loading="lazy">
 </picture></span>`;
   };
 

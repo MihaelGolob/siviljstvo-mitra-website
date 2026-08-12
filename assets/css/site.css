@@ -238,10 +238,16 @@ a:hover{ color:var(--color-accent); }
   background:transparent; border:0; padding:0; cursor:pointer; font-family:inherit;
   color:var(--color-text); scroll-margin-top:calc(var(--bar-h) + 16px);
 }
-.tile .plate{ display:block; width:100%; aspect-ratio:1; overflow:hidden; background:var(--color-surface); }
-.tile img{ width:100%; height:100%; object-fit:cover; transition:transform .25s ease; }
-.tile:hover img{ transform:scale(1.03); }
-.tile-name{ font-family:var(--font-heading); font-size:17px; line-height:1.2; color:var(--color-text); }
+/* Vestments are tall; a square crop beheads them. Tiles are portrait and the
+   photograph is contained, so the whole piece reads. No hover motion. */
+.tile .plate{
+  display:block; width:100%; aspect-ratio:3/4; overflow:hidden; position:relative;
+  background:transparent; border:0; outline:none;
+  border-bottom:2px solid var(--color-accent); padding:0 0 7px;
+}
+.tile img{ width:100%; height:100%; object-fit:contain; }
+.tile-name{ font-family:var(--font-heading); font-size:17px; line-height:1.2; color:var(--color-text); transition:color .2s; }
+.tile:hover .tile-name{ color:var(--color-accent-700); }
 .tile-count{ font-size:12px; font-variant-numeric:tabular-nums; color:color-mix(in srgb, var(--color-text) 65%, transparent); }
 
 /* ── catalogue / generic page ─────────────────────────────────────────── */
@@ -413,6 +419,5 @@ a:hover{ color:var(--color-accent); }
 }
 @media (prefers-reduced-motion: reduce){
   .side{ transition:none; }
-  .tile img{ transition:none; }
-  .tile:hover img{ transform:none; }
+  .tile-name{ transition:none; }
 }
