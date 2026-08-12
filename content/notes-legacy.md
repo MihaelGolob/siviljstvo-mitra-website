@@ -102,3 +102,12 @@ shipped `ponudba.html`, and omits the `stolecrne` category entirely:
 
 Three generations of hand-maintained counts, no two agreeing. `content/catalog.json` is generated from
 the filesystem so this cannot recur.
+
+## Cross-listed photos (carried over from the retired catalog.json)
+
+Two photos appear in two categories each (same picture, duplicated file):
+
+- `gallery/prtoltarni/043.jpg` ↔ `gallery/risvez/003.jpg`
+- `gallery/prtnarodni/036.jpg` ↔ `gallery/risvez/021.jpg`
+
+Nothing in the build consumes this; it is kept so nobody "deduplicates" them by accident.

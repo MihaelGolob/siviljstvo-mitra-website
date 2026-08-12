@@ -121,8 +121,10 @@
   }
 
   function pad(n) { return String(n).padStart(3, "0"); }
+  /* n is the 1-based position; the file stem comes from CATALOG so photos
+     can have arbitrary names and an explicit order */
   function url(slug, n, size) {
-    return BASE + "assets/images/gallery/" + slug + "/" + pad(n) + "-" + size + ".webp";
+    return BASE + "assets/images/gallery/" + slug + "/" + CATALOG[slug].f[n - 1] + "-" + size + ".webp";
   }
   function refCode(slug, n) { return slug.toUpperCase() + "-" + pad(n); }
   function photoAlt(name, n) {
@@ -150,12 +152,12 @@
   function open(slug, fromEl) {
     var c = CATALOG[slug];
     if (!c) return;
-    cur = { slug: slug, name: c.n, count: c.c };
+    cur = { slug: slug, name: c.n, count: c.f.length };
     opener = fromEl || null;
     el.title.textContent = c.n;
 
     el.strip.innerHTML = "";
-    for (var i = 1; i <= c.c; i++) {
+    for (var i = 1; i <= cur.count; i++) {
       var b = document.createElement("button");
       b.className = "lb-th";
       b.type = "button";

@@ -54,15 +54,7 @@
   "hero": {
     "kicker": "Betka Golob s. p.",
     "title": "Izdelava cerkvenih paramentov in narodnih vezenin",
-    "alts": {
-      "04": "Siv mašni plašč z vzorcem zlatih križev ter svetla in vijolična štola",
-      "05": "Rdeč komplet z vezeninami in rišelje prt",
-      "06": "Krstni prtički z vezenimi angeli, svečo in napisom Sveti krst",
-      "07": "Alba in obnovljen tabernakelj z zlato vezenino",
-      "08": "Belo in vijolično pregrinjalo za ambon z vezenima simboloma",
-      "09": "Bandera z napisom Sveta vera, bodi vam luč in črn plašč z malteškim križem",
-      "10": "Bandera z napisom Marija Pomagaj, prosi za nas! in podobo Marije z otrokom"
-    }
+    "dotLabel": "Slika {n}"
   },
   "pillars": [
     {

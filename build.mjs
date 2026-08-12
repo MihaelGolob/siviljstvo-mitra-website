@@ -2,7 +2,8 @@
 /**
  * Šiviljstvo Mitra — static site build.
  *
- * Reads   content/catalog.json   (generated — counts, cover paths; never hand-edited)
+ * Reads   content/gallery/<slug>.json (CMS-edited — ordered photos + cover per category)
+ *         content/hero.json      (CMS-edited — ordered hero slider images)
  *         content/site.json      (authored — language-independent config)
  *         content/i18n/<loc>.json (authored — all strings per locale)
  * Emits   {,de/,en/}{index,ponudba,kontakt}.html, sitemap.xml, robots.txt
@@ -24,18 +25,31 @@ function write(p, s) {
   fs.writeFileSync(path.join(ROOT, p), s);
 }
 
-const catalog = JSON.parse(read("content/catalog.json"));
 const site = JSON.parse(read("content/site.json"));
 const biz = site.business;
 const LOCALES = site.locales; // first entry is the default and lives at the root
 const i18n = Object.fromEntries(LOCALES.map((l) => [l, JSON.parse(read(`content/i18n/${l}.json`))]));
 
-/* ── category model (names are per-locale; counts/covers shared) ───────── */
+/* ── category model (names are per-locale; photos/covers shared) ───────── */
+/* content/gallery/<slug>.json is CMS-edited, so tolerate path-ish values:
+   image entries reduce to basenames, covers to paths relative to sources/. */
+const baseName = (p) => path.posix.basename(String(p));
+const stem = (f) => f.replace(/\.[^.]+$/, "");
+const normCover = (slug, c) => {
+  c = String(c).replace(/^\/?sources\//, "").replace(/^\//, "");
+  return c.includes("/") ? c : `gallery/${slug}/${c}`;
+};
+
 const cats = {};
-for (const c of catalog.categories) {
-  const m = c.cover.match(new RegExp(`^gallery/${c.slug}/(\\d+)\\.`));
-  cats[c.slug] = { slug: c.slug, count: c.count, cover: c.cover, start: m ? parseInt(m[1], 10) : 1 };
+for (const f of fs.readdirSync(path.join(ROOT, "content/gallery")).filter((n) => n.endsWith(".json")).sort()) {
+  const slug = f.slice(0, -".json".length);
+  const g = JSON.parse(read(`content/gallery/${f}`));
+  const files = g.images.map(baseName);
+  const cover = normCover(slug, g.cover || files[0]);
+  const start = files.indexOf(baseName(cover)) + 1; // 0 → cover is a dedicated file
+  cats[slug] = { slug, files, count: files.length, cover, start: start || 1 };
 }
+const hero = { images: JSON.parse(read("content/hero.json")).images.map(baseName) };
 {
   const grouped = site.groups.flat();
   const missing = Object.keys(cats).filter((s) => !grouped.includes(s));
@@ -45,6 +59,20 @@ for (const c of catalog.categories) {
   for (const l of LOCALES)
     for (const s of grouped)
       if (!i18n[l].names[s]) throw new Error(`i18n/${l}.json missing name for "${s}"`);
+}
+
+/* ── all referenced sources must exist before any work starts ──────────── */
+{
+  const missing = [];
+  for (const c of Object.values(cats)) {
+    if (!exists(`sources/${c.cover}`)) missing.push(`${c.slug}: cover sources/${c.cover}`);
+    for (const f of c.files)
+      if (!exists(`sources/gallery/${c.slug}/${f}`)) missing.push(`${c.slug}: sources/gallery/${c.slug}/${f}`);
+  }
+  for (const f of hero.images)
+    if (!exists(`sources/slider/${f}`)) missing.push(`hero: sources/slider/${f}`);
+  if (missing.length)
+    throw new Error(`missing source image(s):\n  ${missing.join("\n  ")}`);
 }
 
 /* ── image derivatives (incremental, locale-independent) ───────────────── */
@@ -66,16 +94,16 @@ for (const c of Object.values(cats)) {
     job(src, `assets/images/covers/${c.slug}-${w}.jpg`,
       (i) => box(i).jpeg({ quality: 78, progressive: true }));
   }
-  for (let n = 1; n <= c.count; n++) {
-    const g = `sources/gallery/${c.slug}/${String(n).padStart(3, "0")}.jpg`;
-    const base = `assets/images/gallery/${c.slug}/${String(n).padStart(3, "0")}`;
+  for (const f of c.files) {
+    const g = `sources/gallery/${c.slug}/${f}`;
+    const base = `assets/images/gallery/${c.slug}/${stem(f)}`;
     job(g, `${base}-640.webp`, (i) =>
       i.resize(640, 640, { fit: "inside", withoutEnlargement: true }).webp({ quality: 78 }));
     job(g, `${base}-160.webp`, (i) => i.resize(160, 160, { fit: "cover" }).webp({ quality: 70 }));
   }
 }
-for (const id of site.heroImages) {
-  job(`sources/slider/${id}.png`, `assets/images/hero/${id}-640.webp`,
+for (const f of hero.images) {
+  job(`sources/slider/${f}`, `assets/images/hero/${stem(f)}-640.webp`,
     (i) => i.resize({ width: 640 }).webp({ quality: 82 }));
 }
 for (const b of ["siviljstvo", "mitra", "logo", "betka"]) {
@@ -148,15 +176,15 @@ ${tilePicture(slug)}
 <span class="tile-name">${esc(name(slug))}</span>
 </a>`;
 
-  const heroSrc = (id) => `${P}assets/images/hero/${id}-640.webp`;
-  const first = site.heroImages[0];
-  const heroDots = site.heroImages.length > 1
+  /* hero images are decorative (alt="") — dots get a numeric localized label */
+  const heroSrc = (f) => `${P}assets/images/hero/${stem(f)}-640.webp`;
+  const heroDots = hero.images.length > 1
     ? `      <div class="hero-dots">
-${site.heroImages.map((id, i) => `        <button type="button" class="hero-dot" data-src="${heroSrc(id)}" data-alt="${esc(t.hero.alts[id] || "")}" aria-label="${esc(t.hero.alts[id] || "")}"${i === 0 ? ' aria-current="true"' : ""}><span></span></button>`).join("\n")}
+${hero.images.map((f, i) => `        <button type="button" class="hero-dot" data-src="${heroSrc(f)}" data-alt="" aria-label="${esc(fmt(t.hero.dotLabel, { n: i + 1 }))}"${i === 0 ? ' aria-current="true"' : ""}><span></span></button>`).join("\n")}
       </div>`
     : "";
   const heroArt = `      <div class="hero-frame">
-        <img id="hero-img" src="${heroSrc(first)}" alt="${esc(t.hero.alts[first] || "")}" width="640" height="373" fetchpriority="high">
+        <img id="hero-img" src="${heroSrc(hero.images[0])}" alt="" width="640" height="373" fetchpriority="high">
       </div>
 ${heroDots}`;
 
@@ -192,7 +220,7 @@ ${slugs.map(tileButton).join("\n")}
 </div>
 <script>
 window.ASSET_BASE=${JSON.stringify(P)};
-window.CATALOG=${JSON.stringify(Object.fromEntries(Object.values(cats).map((c) => [c.slug, { n: name(c.slug), c: c.count, s: c.start }])))};
+window.CATALOG=${JSON.stringify(Object.fromEntries(Object.values(cats).map((c) => [c.slug, { n: name(c.slug), f: c.files.map(stem), s: c.start }])))};
 window.LB_STRINGS=${JSON.stringify({ photoAlt: t.ui.photoAlt })};
 </script>`;
 
@@ -295,7 +323,7 @@ function page(locale, file, { pageKey, content, overlays = "", current }) {
 }
 
 /* ── emit all locales ──────────────────────────────────────────────────── */
-const totalPhotos = catalog.categories.reduce((a, c) => a + c.count, 0);
+const totalPhotos = Object.values(cats).reduce((a, c) => a + c.count, 0);
 
 for (const locale of LOCALES) {
   const f = fragments(locale);
@@ -311,7 +339,7 @@ for (const locale of LOCALES) {
       BROWSE_LABEL: esc(t.ui.browseCatalogue),
       CONTACT_LABEL: esc(t.ui.contact),
       FROM_CATALOGUE: esc(t.ui.fromCatalogue),
-      ALL_GROUPS: esc(fmt(t.ui.allGroups, { n: catalog.categories.length })),
+      ALL_GROUPS: esc(fmt(t.ui.allGroups, { n: Object.keys(cats).length })),
       PILLARS: f.pillars,
       HIGHLIGHT_TILES: site.highlights.map(f.tileLink).join("\n")
     })
@@ -361,12 +389,52 @@ ${LOCALES.flatMap((l) => FILES.map((p) => `  <url><loc>${pageUrl(l, p)}</loc></u
 
 write("robots.txt", `User-agent: *
 Allow: /
+Disallow: /admin/
 Disallow: /sources/
 Disallow: /src/
 Disallow: /node_modules/
 
 Sitemap: ${site.siteUrl}/sitemap.xml
 `);
+
+/* ── prune derivatives whose source is gone or no longer listed ────────── */
+function pruneDir(dir, keepStems, rel) {
+  const removed = [];
+  if (!fs.existsSync(dir)) return removed;
+  for (const e of fs.readdirSync(dir)) {
+    const m = e.match(/^(.+)-(?:640|320|160)\.(?:webp|jpg)$/);
+    if (m && keepStems.has(m[1])) continue;
+    fs.rmSync(path.join(dir, e), { recursive: true });
+    removed.push(`${rel}/${e}`);
+  }
+  return removed;
+}
+const pruned = [];
+{
+  const galleryRoot = path.join(ROOT, "assets/images/gallery");
+  for (const d of fs.existsSync(galleryRoot) ? fs.readdirSync(galleryRoot) : []) {
+    if (d === ".DS_Store") continue;
+    const keep = cats[d] ? new Set(cats[d].files.map(stem)) : new Set();
+    pruned.push(...pruneDir(path.join(galleryRoot, d), keep, `assets/images/gallery/${d}`));
+    if (!cats[d]) fs.rmSync(path.join(galleryRoot, d), { recursive: true, force: true });
+  }
+  pruned.push(...pruneDir(path.join(ROOT, "assets/images/hero"),
+    new Set(hero.images.map(stem)), "assets/images/hero"));
+}
+
+/* ── orphaned sources (uploaded but not listed) — warn, don't fail ─────── */
+const warnings = [];
+{
+  const img = (f) => /\.(jpe?g|png|webp)$/i.test(f);
+  for (const c of Object.values(cats)) {
+    const listed = new Set(c.files);
+    for (const f of fs.readdirSync(path.join(ROOT, `sources/gallery/${c.slug}`)).filter(img))
+      if (!listed.has(f)) warnings.push(`sources/gallery/${c.slug}/${f} is not listed in content/gallery/${c.slug}.json — not published`);
+  }
+  const listed = new Set(hero.images);
+  for (const f of fs.readdirSync(path.join(ROOT, "sources/slider")).filter(img))
+    if (!listed.has(f)) warnings.push(`sources/slider/${f} is not listed in content/hero.json — not published`);
+}
 
 /* ── verification ──────────────────────────────────────────────────────── */
 const generated = await runJobs();
@@ -395,14 +463,15 @@ for (const locale of LOCALES) {
   }
 }
 for (const c of Object.values(cats)) {
-  for (let n = 1; n <= c.count; n++) {
-    const p = `assets/images/gallery/${c.slug}/${String(n).padStart(3, "0")}`;
+  for (const f of c.files) {
+    const p = `assets/images/gallery/${c.slug}/${stem(f)}`;
     if (!exists(`${p}-640.webp`)) errors.push(`missing derivative ${p}-640.webp`);
     if (!exists(`${p}-160.webp`)) errors.push(`missing derivative ${p}-160.webp`);
   }
-  if (exists(`assets/images/gallery/${c.slug}/${String(c.count + 1).padStart(3, "0")}-640.webp`))
-    errors.push(`${c.slug}: derivative beyond catalog count ${c.count}`);
 }
+for (const f of hero.images)
+  if (!exists(`assets/images/hero/${stem(f)}-640.webp`))
+    errors.push(`missing derivative assets/images/hero/${stem(f)}-640.webp`);
 
 if (errors.length) {
   console.error(`BUILD FAILED — ${errors.length} problem(s):`);
@@ -413,13 +482,15 @@ if (errors.length) {
 const DIST = path.join(ROOT, "dist");
 fs.rmSync(DIST, { recursive: true, force: true });
 fs.mkdirSync(DIST);
-const SHIP = ["index.html", "ponudba.html", "kontakt.html", "de", "en",
+const SHIP = ["index.html", "ponudba.html", "kontakt.html", "de", "en", "admin",
   "assets", "favicon.ico", "apple-touch-icon.png", "robots.txt", "sitemap.xml"];
 for (const entry of SHIP) fs.cpSync(path.join(ROOT, entry), path.join(DIST, entry), { recursive: true });
 const sum = (d) => fs.readdirSync(d, { withFileTypes: true })
   .reduce((a, e) => a + (e.isDirectory() ? sum(path.join(d, e.name)) : fs.statSync(path.join(d, e.name)).size), 0);
 const distBytes = sum(DIST);
 
+for (const w of warnings) console.warn(`warning: ${w}`);
+if (pruned.length) console.log(`pruned ${pruned.length} stale derivative(s):\n  ${pruned.join("\n  ")}`);
 console.log(`ok: ${LOCALES.length * FILES.length} pages (${LOCALES.join(", ")}), sitemap, robots; ${generated} derivative(s) generated`);
-console.log(`    categories: ${catalog.categories.length}, photos: ${totalPhotos}`);
+console.log(`    categories: ${Object.keys(cats).length}, photos: ${totalPhotos}`);
 console.log(`    dist/ ready to upload: ${(distBytes / 1e6).toFixed(1)} MB`);

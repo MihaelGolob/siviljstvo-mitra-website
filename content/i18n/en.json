@@ -50,15 +50,7 @@
   "hero": {
     "kicker": "Betka Golob s. p.",
     "title": "Handmade church vestments and folk embroidery",
-    "alts": {
-      "04": "Grey chasuble with a golden cross pattern, and a cream and a purple stole",
-      "05": "Red embroidered set with a Richelieu cloth",
-      "06": "Baptismal cloths embroidered with angels, a candle and an inscription",
-      "07": "Alb and a restored tabernacle with gold embroidery",
-      "08": "White and purple lectern falls with embroidered symbols",
-      "09": "Church banner with an inscription and a black robe with a Maltese cross",
-      "10": "Church banner with an image of Mary and Child and a Slovenian inscription"
-    }
+    "dotLabel": "Image {n}"
   },
   "pillars": [
     {

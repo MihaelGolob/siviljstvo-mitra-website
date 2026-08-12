@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
 Disallow: /sources/
 Disallow: /src/
 Disallow: /node_modules/

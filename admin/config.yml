@@ -1,0 +1,74 @@
+# Sveltia CMS — https://sveltiacms.app
+# Saving here commits to master; GitHub Actions then rebuilds and deploys the
+# site automatically (live after ~2–3 minutes).
+#
+# base_url must point at the deployed sveltia-cms-auth Cloudflare Worker —
+# see README "CMS setup". Until it is set, /admin/ cannot log in.
+
+backend:
+  name: github
+  repo: MihaelGolob/siviljstvo-mitra-website
+  branch: master
+  base_url: https://REPLACE-WITH-SVELTIA-AUTH-WORKER.workers.dev
+
+site_url: https://siviljstvo-mitra.si
+media_folder: sources
+
+media_libraries:
+  default:
+    config:
+      # phone photos get resized + converted on upload so the repo stays small
+      transformations:
+        raster_image:
+          format: webp
+          quality: 85
+          width: 2048
+          height: 2048
+
+collections:
+  - name: hero
+    label: Naslovnica — drsnik
+    icon: imagesmode
+    files:
+      - name: hero
+        label: Slike v drsniku
+        file: content/hero.json
+        fields:
+          - name: images
+            label: Slike
+            label_singular: slika
+            hint: Povlecite za spremembo vrstnega reda. Prva slika se prikaže ob odprtju strani.
+            widget: list
+            field:
+              name: image
+              label: Slika
+              widget: image
+              media_folder: /sources/slider
+              public_folder: ''
+
+  - name: gallery
+    label: Galerija
+    icon: photo_library
+    folder: content/gallery
+    format: json
+    extension: json
+    create: false
+    delete: false
+    fields:
+      - name: cover
+        label: Naslovna slika kategorije
+        widget: image
+        media_folder: /sources/gallery/{{slug}}
+        public_folder: ''
+        hint: Slika na ploščici kategorije. Galerija se odpre na tej fotografiji.
+      - name: images
+        label: Fotografije
+        label_singular: fotografija
+        hint: Povlecite za spremembo vrstnega reda. Nova fotografija naj bo JPG ali PNG.
+        widget: list
+        field:
+          name: image
+          label: Fotografija
+          widget: image
+          media_folder: /sources/gallery/{{slug}}
+          public_folder: ''

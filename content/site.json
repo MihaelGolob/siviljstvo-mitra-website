@@ -1,5 +1,5 @@
 {
-  "_note": "Language-independent config. All copy, category display names and group titles live in content/i18n/<locale>.json. Counts and photo paths live in catalog.json (generated; never hand-edit).",
+  "_note": "Language-independent config. All copy, category display names and group titles live in content/i18n/<locale>.json. Gallery photos and covers live in content/gallery/<slug>.json, hero slides in content/hero.json (both CMS-edited).",
   "siteUrl": "https://siviljstvo-mitra.si",
   "locales": ["sl", "de", "en"],
   "business": {
@@ -18,7 +18,6 @@
   },
   "googlePlaceId": "ChIJX0RBlKU1ZUcRgFTu10PIi1Q",
   "searchConsoleToken": null,
-  "heroImages": ["04", "05", "06", "07", "08", "09", "10"],
   "highlights": ["masnibel", "stolevijola", "prtoltarni", "bandera", "mitre", "risvez"],
   "groups": [
     ["albe", "dalmatika", "duhovniske", "masnibel", "masnirdec", "masnivijola", "masnizelen", "masniunikat", "pluviali"],

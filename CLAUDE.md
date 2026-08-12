@@ -8,7 +8,10 @@ Trilingual (sl/en/de) static site built by `build.mjs` (Node, sharp for images).
 - `index.html`, `ponudba.html`, `kontakt.html`, `en/`, `de/`, `sitemap.xml`, `robots.txt` are **generated output** — never hand-edit them; changes get overwritten by the next build.
 - `content/site.json` — language-independent config (authored).
 - `content/i18n/<locale>.json` — all user-facing strings per locale (authored). Any text change must be made in every locale file.
-- `content/catalog.json` — generated (counts, cover paths); never hand-edit.
+- `content/gallery/<slug>.json` — one per category: ordered `images` list (basenames in `sources/gallery/<slug>/`) + `cover`. Edited via Sveltia CMS at `/admin/`; safe to hand-edit too.
+- `content/hero.json` — ordered hero slider images (basenames in `sources/slider/`). Also CMS-edited.
+- `admin/` — Sveltia CMS (`index.html` + `config.yml`); shipped to `dist/` as-is.
+- List order is display order; the build names derivatives after the source file stem, so reordering regenerates nothing. Files present on disk but not listed are warned about and not published; their stale derivatives are pruned.
 - First locale in `site.locales` is the default and lives at the site root.
 
 ## Workflow

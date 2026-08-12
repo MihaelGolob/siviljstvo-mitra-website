@@ -23,8 +23,9 @@ machine-German.
 | `index.html`, `ponudba.html`, `kontakt.html`, `de/`, `en/` | yes | Generated pages, three locales |
 | `assets/css/`, `assets/js/` | yes | Stylesheet and the drawer/lightbox/hero script |
 | `assets/images/{gallery,covers,hero,brand}/` | yes | **Generated** WebP derivatives (+ JPEG tile fallbacks) — never edit, rebuild instead |
-| `sources/{gallery,covers,slider,brand}/` | **no** | Build inputs and the **only surviving originals**: 738 gallery photos (`<slug>/001.jpg…`, contiguous), 3 standalone covers, the hero-montage pool, brand art. Never re-encode or overwrite. |
-| `content/` | **no** | `catalog.json` (generated manifest), `site.json` (config), `i18n/{sl,de,en}.json` (all copy), `notes-legacy.md` (salvage) |
+| `admin/` | yes | Sveltia CMS (`/admin/`) — browser editing of gallery + hero slider |
+| `sources/{gallery,covers,slider,brand}/` | **no** | Build inputs and the **only surviving originals**: 738 gallery photos, 3 standalone covers, the hero-montage pool, brand art. Never re-encode or overwrite. |
+| `content/` | **no** | `gallery/<slug>.json` (ordered photos + cover per category, CMS-edited), `hero.json` (slider, CMS-edited), `site.json` (config), `i18n/{sl,de,en}.json` (all copy), `notes-legacy.md` (salvage) |
 | `build.mjs`, `src/templates/` | **no** | Build script and language-neutral page templates |
 
 ## Deploying
@@ -52,33 +53,53 @@ the flag switcher in the sidebar.
 - **All copy lives in `content/i18n/<locale>.json`** — UI strings, hero, pillars, category names,
   group titles, page metadata, plural forms (Slovenian's 4-form declension; de/en singular/plural).
 - `content/site.json` holds language-independent config: contact data, maps embed/link, Google Place
-  ID, hero rotation, highlights, category grouping, locale list (first entry = root locale).
+  ID, highlights, category grouping, locale list (first entry = root locale).
 - The German and English copy was written fresh (the 2013 machine German is banned by the build's
   leak check); a native-speaker review before launch is still recommended.
 
 ## Common changes
 
-- **Photos**: add/remove files under `sources/gallery/<slug>/`, keep names contiguous
-  (`001.jpg…NNN.jpg`), update the category's `count` in `content/catalog.json`, rebuild.
-  The build verifies counts against the filesystem and fails on any mismatch.
+- **Photos**: preferably via the CMS (below). By hand: drop the file into `sources/gallery/<slug>/`
+  (any name), add it at the right position in `content/gallery/<slug>.json` → `images`, rebuild.
+  List order is display order; files on disk but not listed are warned about and never published.
 - **Copy or category names**: edit `content/i18n/*.json`, rebuild.
-- **Hero rotation**: pick ids from `sources/slider/` (04–10 are usable montages; the retired 01–03
-  had branding burned in and live in `archive/slider-retired/`) in `site.json` → `heroImages`,
-  add per-locale alts in the i18n files, rebuild.
+- **Hero rotation**: reorder/add basenames from `sources/slider/` in `content/hero.json` (04–10 are
+  usable montages; the retired 01–03 had branding burned in and live in `archive/slider-retired/`
+  in git history), rebuild. Hero images are decorative (`alt=""`).
 - **Reviews card**: lives on the contact page, gated on `googlePlaceId` in `site.json`.
 
-## `content/catalog.json`
+## CMS (`/admin/`) — Sveltia
 
-Generated manifest of the photo catalogue — counts and cover paths, mirrored from `sources/`.
-Never hand-edit paths; `crossListed` records the two photos that intentionally appear in two
-categories (dedupe on those pairs if a combined "all products" view is ever built).
+Betka's side of the site: `https://siviljstvo-mitra.si/admin/` edits `content/gallery/*.json`,
+`content/hero.json` and uploads photos into `sources/`. Saving commits to master under the
+editor's GitHub account; the deploy workflow rebuilds and publishes automatically. Uploads are
+resized to ≤2048 px WebP in the browser before committing (see `admin/config.yml`).
+
+### One-time setup (not yet done)
+
+1. Create a GitHub account for the editor and add it as a **collaborator with write access** to
+   `MihaelGolob/siviljstvo-mitra-website`.
+2. Deploy the OAuth relay: <https://github.com/sveltia/sveltia-cms-auth> — one-click deploy to a
+   free Cloudflare Worker. Note the worker URL.
+3. Create a **GitHub OAuth app** (Settings → Developer settings → OAuth Apps):
+   Homepage `https://siviljstvo-mitra.si`, callback `https://<worker-url>/callback`.
+   Put its Client ID/Secret into the worker's variables (`GITHUB_CLIENT_ID`,
+   `GITHUB_CLIENT_SECRET`), and set `ALLOWED_DOMAINS` to `siviljstvo-mitra.si`.
+4. Replace the placeholder `base_url` in `admin/config.yml` with the worker URL, rebuild, deploy.
+
+## Cross-listed photos
+
+Two photos intentionally appear in two categories each (see `content/notes-legacy.md`) — don't
+"deduplicate" them; dedupe on those pairs only if a combined "all products" view is ever built.
 
 ## Constraints worth remembering
 
 - **Product photos are small and cannot be improved**: 493 of 738 are under 400 px wide (median
   ≈ 275×640) and no better source exists anywhere. The design uses constrained tiles for a reason.
-- The lightbox reference codes (`MASNIBEL-042`) map 1:1 to `sources/gallery/masnibel/042.jpg` —
-  they're how customers identify pieces in enquiries; keep numbering stable.
+- The lightbox reference codes (`MASNIBEL-042`) are the photo's **position** in the category's
+  `images` list — customers quote them in enquiries. Reordering or deleting photos shifts the codes
+  of everything after, so match a quoted code against the site version the customer was looking at,
+  not blindly against the current list.
 
 ## Deleted material lives only in git history — never squash or prune it
 
