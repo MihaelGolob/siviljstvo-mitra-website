@@ -6,6 +6,10 @@
 # editor's GitHub account, scoped to this repo, Contents read/write. If that
 # ever gets annoying, deploy https://github.com/sveltia/sveltia-cms-auth and
 # add its URL here as `base_url:` to enable one-click GitHub sign-in.
+#
+# media/public folders live at COLLECTION level on purpose: Sveltia ignores
+# field-level ones (sveltia-cms#497), which breaks image previews. Stored
+# values are full /sources/... paths; build.mjs normalizes them.
 
 backend:
   name: github
@@ -30,6 +34,8 @@ collections:
   - name: hero
     label: Naslovnica — drsnik
     icon: imagesmode
+    media_folder: /sources/slider
+    public_folder: /sources/slider
     files:
       - name: hero
         label: Slike v drsniku
@@ -44,8 +50,6 @@ collections:
               name: image
               label: Slika
               widget: image
-              media_folder: /sources/slider
-              public_folder: ''
 
   - name: gallery
     label: Galerija
@@ -55,12 +59,12 @@ collections:
     extension: json
     create: false
     delete: false
+    media_folder: /sources/gallery/{{slug}}
+    public_folder: /sources/gallery/{{slug}}
     fields:
       - name: cover
         label: Naslovna slika kategorije
         widget: image
-        media_folder: /sources/gallery/{{slug}}
-        public_folder: ''
         hint: Slika na ploščici kategorije. Galerija se odpre na tej fotografiji.
       - name: images
         label: Fotografije
@@ -71,5 +75,3 @@ collections:
           name: image
           label: Fotografija
           widget: image
-          media_folder: /sources/gallery/{{slug}}
-          public_folder: ''

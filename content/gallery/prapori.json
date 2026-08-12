@@ -1,18 +1,18 @@
 {
-  "cover": "001.jpg",
+  "cover": "/sources/gallery/prapori/001.jpg",
   "images": [
-    "001.jpg",
-    "002.jpg",
-    "003.jpg",
-    "004.jpg",
-    "005.jpg",
-    "006.jpg",
-    "007.jpg",
-    "008.jpg",
-    "009.jpg",
-    "010.jpg",
-    "011.jpg",
-    "012.jpg",
-    "013.jpg"
+    "/sources/gallery/prapori/001.jpg",
+    "/sources/gallery/prapori/002.jpg",
+    "/sources/gallery/prapori/003.jpg",
+    "/sources/gallery/prapori/004.jpg",
+    "/sources/gallery/prapori/005.jpg",
+    "/sources/gallery/prapori/006.jpg",
+    "/sources/gallery/prapori/007.jpg",
+    "/sources/gallery/prapori/008.jpg",
+    "/sources/gallery/prapori/009.jpg",
+    "/sources/gallery/prapori/010.jpg",
+    "/sources/gallery/prapori/011.jpg",
+    "/sources/gallery/prapori/012.jpg",
+    "/sources/gallery/prapori/013.jpg"
   ]
 }

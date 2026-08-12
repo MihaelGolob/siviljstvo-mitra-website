@@ -1,12 +1,12 @@
 {
-  "cover": "covers/duhovniske.png",
+  "cover": "/sources/covers/duhovniske.png",
   "images": [
-    "001.jpg",
-    "002.jpg",
-    "003.jpg",
-    "004.jpg",
-    "005.jpg",
-    "006.jpg",
-    "007.jpg"
+    "/sources/gallery/duhovniske/001.jpg",
+    "/sources/gallery/duhovniske/002.jpg",
+    "/sources/gallery/duhovniske/003.jpg",
+    "/sources/gallery/duhovniske/004.jpg",
+    "/sources/gallery/duhovniske/005.jpg",
+    "/sources/gallery/duhovniske/006.jpg",
+    "/sources/gallery/duhovniske/007.jpg"
   ]
 }

@@ -1,7 +1,7 @@
 {
-  "cover": "001.jpg",
+  "cover": "/sources/gallery/stolecrne/001.jpg",
   "images": [
-    "001.jpg",
-    "002.jpg"
+    "/sources/gallery/stolecrne/001.jpg",
+    "/sources/gallery/stolecrne/002.jpg"
   ]
 }

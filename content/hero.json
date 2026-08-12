@@ -1,3 +1,11 @@
 {
-  "images": ["04.png", "05.png", "06.png", "07.png", "08.png", "09.png", "10.png"]
+  "images": [
+    "/sources/slider/04.png",
+    "/sources/slider/05.png",
+    "/sources/slider/06.png",
+    "/sources/slider/07.png",
+    "/sources/slider/08.png",
+    "/sources/slider/09.png",
+    "/sources/slider/10.png"
+  ]
 }

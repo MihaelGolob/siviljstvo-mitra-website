@@ -1,21 +1,21 @@
 {
-  "cover": "001.jpg",
+  "cover": "/sources/gallery/stolediakon/001.jpg",
   "images": [
-    "001.jpg",
-    "002.jpg",
-    "003.jpg",
-    "004.jpg",
-    "005.jpg",
-    "006.jpg",
-    "007.jpg",
-    "008.jpg",
-    "009.jpg",
-    "010.jpg",
-    "011.jpg",
-    "012.jpg",
-    "013.jpg",
-    "014.jpg",
-    "015.jpg",
-    "016.jpg"
+    "/sources/gallery/stolediakon/001.jpg",
+    "/sources/gallery/stolediakon/002.jpg",
+    "/sources/gallery/stolediakon/003.jpg",
+    "/sources/gallery/stolediakon/004.jpg",
+    "/sources/gallery/stolediakon/005.jpg",
+    "/sources/gallery/stolediakon/006.jpg",
+    "/sources/gallery/stolediakon/007.jpg",
+    "/sources/gallery/stolediakon/008.jpg",
+    "/sources/gallery/stolediakon/009.jpg",
+    "/sources/gallery/stolediakon/010.jpg",
+    "/sources/gallery/stolediakon/011.jpg",
+    "/sources/gallery/stolediakon/012.jpg",
+    "/sources/gallery/stolediakon/013.jpg",
+    "/sources/gallery/stolediakon/014.jpg",
+    "/sources/gallery/stolediakon/015.jpg",
+    "/sources/gallery/stolediakon/016.jpg"
   ]
 }

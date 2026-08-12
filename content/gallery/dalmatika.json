@@ -1,12 +1,12 @@
 {
-  "cover": "004.jpg",
+  "cover": "/sources/gallery/dalmatika/004.jpg",
   "images": [
-    "001.jpg",
-    "002.jpg",
-    "003.jpg",
-    "004.jpg",
-    "005.jpg",
-    "006.jpg",
-    "007.jpg"
+    "/sources/gallery/dalmatika/001.jpg",
+    "/sources/gallery/dalmatika/002.jpg",
+    "/sources/gallery/dalmatika/003.jpg",
+    "/sources/gallery/dalmatika/004.jpg",
+    "/sources/gallery/dalmatika/005.jpg",
+    "/sources/gallery/dalmatika/006.jpg",
+    "/sources/gallery/dalmatika/007.jpg"
   ]
 }
