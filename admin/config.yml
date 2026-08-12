@@ -2,14 +2,15 @@
 # Saving here commits to master; GitHub Actions then rebuilds and deploys the
 # site automatically (live after ~2–3 minutes).
 #
-# base_url must point at the deployed sveltia-cms-auth Cloudflare Worker —
-# see README "CMS setup". Until it is set, /admin/ cannot log in.
+# Login: "sign in with a personal access token" — a fine-grained PAT on the
+# editor's GitHub account, scoped to this repo, Contents read/write. If that
+# ever gets annoying, deploy https://github.com/sveltia/sveltia-cms-auth and
+# add its URL here as `base_url:` to enable one-click GitHub sign-in.
 
 backend:
   name: github
   repo: MihaelGolob/siviljstvo-mitra-website
   branch: master
-  base_url: https://REPLACE-WITH-SVELTIA-AUTH-WORKER.workers.dev
 
 site_url: https://siviljstvo-mitra.si
 media_folder: sources

@@ -79,13 +79,17 @@ resized to ≤2048 px WebP in the browser before committing (see `admin/config.y
 
 1. Create a GitHub account for the editor and add it as a **collaborator with write access** to
    `MihaelGolob/siviljstvo-mitra-website`.
-2. Deploy the OAuth relay: <https://github.com/sveltia/sveltia-cms-auth> — one-click deploy to a
-   free Cloudflare Worker. Note the worker URL.
-3. Create a **GitHub OAuth app** (Settings → Developer settings → OAuth Apps):
-   Homepage `https://siviljstvo-mitra.si`, callback `https://<worker-url>/callback`.
-   Put its Client ID/Secret into the worker's variables (`GITHUB_CLIENT_ID`,
-   `GITHUB_CLIENT_SECRET`), and set `ALLOWED_DOMAINS` to `siviljstvo-mitra.si`.
-4. Replace the placeholder `base_url` in `admin/config.yml` with the worker URL, rebuild, deploy.
+2. On that account, generate a **fine-grained personal access token**: Settings → Developer
+   settings → Fine-grained tokens; restrict it to this one repository, permission
+   **Contents: read and write**, longest expiration available.
+3. On the editor's computer, open `/admin/`, choose *sign in with a personal access token*, paste
+   it. It's remembered by the browser from then on (re-paste after token expiry or if browser
+   data is cleared).
+
+No server-side OAuth needed for a single editor. If token re-entry ever gets annoying (multiple
+devices, expiries), deploy <https://github.com/sveltia/sveltia-cms-auth> to a free Cloudflare
+Worker with a GitHub OAuth app and set its URL as `base_url` in `admin/config.yml` — that enables
+one-click "Sign in with GitHub".
 
 ## Cross-listed photos
 
